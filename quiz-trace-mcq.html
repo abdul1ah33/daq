@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trace MCQ quiz · Python practice</title><style>
+:root{
+  --bg:#f5f6fa; --card:#ffffff; --ink:#1b1f2e; --muted:#5d6478; --line:#e3e6ef;
+  --accent:#27378f; --accent-soft:#e9ecfa; --accent-ink:#ffffff;
+  --code-bg:#14182b; --code-ink:#e6e8f2; --code-line:#262b45;
+  --ok:#1a7f4b; --ok-soft:#e5f5ec; --bad:#b4232c; --bad-soft:#fbe9ea; --warn:#8a5a00; --warn-soft:#fff4dc;
+  --hint:#7a4b00; --hint-soft:#fff7e6;
+  --t-kw:#c792ea; --t-str:#addb67; --t-num:#f78c6c; --t-com:#7f89a8; --t-fn:#82aaff; --t-prompt:#ffcb6b;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f111a; --card:#171a26; --ink:#e7e9f3; --muted:#9aa1b8; --line:#2a2f42;
+    --accent:#8fa2ff; --accent-soft:#1f2540; --accent-ink:#0f111a;
+    --code-bg:#0b0d16; --code-ink:#e6e8f2; --code-line:#232842;
+    --ok:#5fd394; --ok-soft:#14291f; --bad:#ff7b84; --bad-soft:#2d1619; --warn:#ffcf70; --warn-soft:#2a2210;
+    --hint:#ffd27a; --hint-soft:#262012;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--accent)}
+code,kbd,pre,textarea{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+code{font-size:.9em;background:var(--accent-soft);padding:.1em .35em;border-radius:4px}
+kbd{font-size:.85em;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 .3em;background:var(--card)}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.topbar{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:12px;min-height:54px;overflow-x:auto}
+.brand{font-weight:700;text-decoration:none;color:var(--ink);white-space:nowrap}
+.brand span{color:var(--accent)}
+.chips{display:flex;gap:6px;margin-left:auto}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 10px;border-radius:16px;border:1px solid var(--line);text-decoration:none;color:var(--ink);font-size:14px;white-space:nowrap}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.hero{padding:32px 0 8px}
+.eyebrow{color:var(--muted);font-size:14px;letter-spacing:.04em;text-transform:uppercase;margin:0 0 4px}
+h1{font-size:clamp(26px,5vw,36px);line-height:1.2;margin:0 0 8px}
+h2{font-size:22px;margin:32px 0 12px}
+h2.section{border-bottom:2px solid var(--accent);padding-bottom:6px;color:var(--accent)}
+.lead{color:var(--muted);margin:0 0 16px}
+.recap{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px 14px 18px;margin:16px 0}
+.recap h2{font-size:17px;margin:0 0 6px}
+.recap ul{margin:0;padding-left:20px}
+.recap li{margin:4px 0}
+.howto{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;color:var(--muted);margin:12px 0 4px}
+.progress{display:flex;align-items:center;gap:10px;margin:18px 0 6px;font-size:14px;color:var(--muted)}
+.bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.ex{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;scroll-margin-top:70px}
+.ex.solved{border-color:var(--ok)}
+.ex header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:8px}
+.ex h3{margin:0;font-size:18px;flex:1 1 220px}
+.num{font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.badge{font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.badge.write{background:var(--accent-soft);color:var(--accent)}
+.badge.predict{background:var(--warn-soft);color:var(--warn)}
+.badge.fix{background:var(--bad-soft);color:var(--bad)}
+.done{font-size:14px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.done input{width:18px;height:18px;accent-color:var(--ok)}
+.task{margin:4px 0 10px}
+.label{font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 4px;text-transform:uppercase;letter-spacing:.04em}
+pre{margin:0}
+pre.code,pre.out{background:var(--code-bg);color:var(--code-ink);padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.55;tab-size:4}
+pre.out{background:var(--accent-soft);color:var(--ink);border:1px dashed var(--line)}
+pre.out .err{color:var(--bad);font-weight:600}
+.t-kw{color:var(--t-kw)}.t-str{color:var(--t-str)}.t-num{color:var(--t-num)}.t-com{color:var(--t-com);font-style:italic}.t-fn{color:var(--t-fn)}.t-prompt{color:var(--t-prompt)}
+button{font:inherit;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:7px 14px;font-size:14px;min-height:36px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:default}
+.hintbox{margin-top:12px}
+.hints{margin:0 0 8px;padding:0;list-style:none}
+.hints li{display:none;background:var(--hint-soft);border-left:3px solid var(--hint);padding:8px 12px;border-radius:0 8px 8px 0;margin:6px 0}
+.hints li.show{display:block;animation:fade .25s}
+.hints li b{color:var(--hint)}
+@keyframes fade{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+details{margin-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--accent);padding:4px 0;list-style-position:outside}
+details.solution[open]{background:var(--bg);border-radius:8px;padding:4px 12px 12px}
+.explain{margin:10px 0 0;font-size:15px}
+.guess{margin-top:10px}
+.guess textarea,.editor textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.55;background:var(--card);color:var(--ink);resize:vertical;tab-size:4}
+.guess textarea{min-height:70px}
+.editor textarea{min-height:140px;background:var(--code-bg);color:var(--code-ink);border-color:var(--code-line)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.verdict{font-size:14px;font-weight:600}
+.verdict.ok{color:var(--ok)}.verdict.bad{color:var(--bad)}
+.status,.note{font-size:13px;color:var(--muted)}
+.runout{margin-top:8px;display:none}
+.pager{display:flex;justify-content:space-between;gap:12px;margin:32px 0 48px}
+.pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;text-decoration:none;color:var(--ink)}
+.pager a:hover{border-color:var(--accent)}
+.pager small{display:block;color:var(--muted)}
+.pager .next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding:0 0 40px}
+/* index */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:16px 0}
+.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-decoration:none;color:var(--ink)}
+.card:hover{border-color:var(--accent)}
+.card .n{font-size:13px;color:var(--muted)}
+.card h3{margin:2px 0 6px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.card.quiz{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.card.quiz p,.card.quiz .n{color:var(--accent-ink);opacity:.85}
+/* quiz */
+.qtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.score{position:sticky;top:54px;z-index:4;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:15px}
+.score b{font-variant-numeric:tabular-nums}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;scroll-margin-top:120px}
+.q.right{border-color:var(--ok)}.q.wrong{border-color:var(--bad)}
+.q .qhead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:8px}
+.q .topic{font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--accent-soft);color:var(--accent)}
+.q .ask{margin:10px 0 8px;font-weight:600}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:10px 12px;min-height:44px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .k{font-weight:700;color:var(--muted);min-width:1.2em}
+.opt pre{font-size:14px;white-space:pre-wrap;word-break:break-word}
+.opt:disabled{cursor:default}
+.opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.opt.picked.incorrect{border-color:var(--bad);background:var(--bad-soft)}
+.feedback{display:none;margin-top:12px;border-radius:8px;padding:10px 14px}
+.feedback.ok{display:block;background:var(--ok-soft)}
+.feedback.bad{display:block;background:var(--bad-soft)}
+.feedback ol{margin:6px 0 0;padding-left:20px}
+.chip.filter{cursor:pointer;background:var(--card)}
+.chip.filter.on{background:var(--accent);color:var(--accent-ink)}
+.hidden{display:none!important}
+@media (max-width:520px){ .ex,.q{padding:14px} pre.code,pre.out{font-size:13px} }
+</style></head>
+<body data-part="quiz"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">Intro to <span>Python</span> · Practice</a><div class="chips"><a class="chip" href="part1-interpreter.html" title="Part 1: Interactive Interpreter">1</a><a class="chip" href="part2-comments.html" title="Part 2: Comments">2</a><a class="chip" href="part3-variables.html" title="Part 3: Variables and Types">3</a><a class="chip" href="part4-numbers-booleans.html" title="Part 4: Numbers and Booleans">4</a><a class="chip" href="part5-strings.html" title="Part 5: Strings">5</a><a class="chip" href="part6-data-structures.html" title="Part 6: Data Structures">6</a><a class="chip" href="part7-io-control-flow.html" title="Part 7: Console I/O and Control Flow">7</a><a class="chip" href="part8-loops.html" title="Part 8: Loops">8</a><a class="chip" href="part9-functions.html" title="Part 9: Functions">9</a><a class="chip on" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">All parts · Lectures 1–2</p><h1>Trace the code: 63 MCQs</h1>
+<p class="lead">Read each snippet and run it in your head, line by line, before choosing. Use the hint if you are stuck. After you answer, a step-by-step trace explains the result. Your answers are saved in this browser.</p></section><div class="qtools"><span class="status">Topic:</span><button class="chip filter on" data-topic="all">All</button><button class="chip filter" data-topic="interpreter-comments">Interpreter &amp; comments</button><button class="chip filter" data-topic="variables-types">Variables &amp; types</button><button class="chip filter" data-topic="numbers-booleans">Numbers &amp; booleans</button><button class="chip filter" data-topic="strings">Strings</button><button class="chip filter" data-topic="lists">Lists</button><button class="chip filter" data-topic="dictionaries">Dictionaries</button><button class="chip filter" data-topic="tuples">Tuples</button><button class="chip filter" data-topic="sets">Sets</button><button class="chip filter" data-topic="control-flow-i-o">Control flow &amp; I/O</button><button class="chip filter" data-topic="loops">Loops</button><button class="chip filter" data-topic="functions">Functions</button></div><div class="score"><span>Answered <b id="s-ans"></b></span><span>Correct <b id="s-ok"></b></span><span>Score <b id="s-pct"></b></span><span style="margin-left:auto;display:flex;gap:8px"><button class="btn" id="wrong-only">Show only my mistakes</button><button class="btn" id="reset">Reset</button></span></div><article class="q" id="q1" data-topic="interpreter-comments" data-answer="1">
+<div class="qhead"><span class="num">Q1</span><span class="topic">Interpreter &amp; comments</span></div>
+<pre class="code">&gt;&gt;&gt; word = &quot;hi&quot;
+&gt;&gt;&gt; word * 2</pre><p class="ask">What does the interactive interpreter show after the second line?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>hihi</pre></button><button class="opt"><span class="k">B</span><pre>&#x27;hihi&#x27;</pre></button><button class="opt"><span class="k">C</span><pre>hi hi</pre></button><button class="opt"><span class="k">D</span><pre>TypeError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> The interpreter echoes the value of an expression the same way it would appear in code.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>Line 1 is an assignment, so nothing is echoed.</li><li><code>word * 2</code> repeats the string, giving <code>hihi</code>.</li><li>Because it is a string value and not a <code>print</code>, the interpreter shows it with quotes: <code>'hihi'</code>.</li></ol></div></article><article class="q" id="q2" data-topic="interpreter-comments" data-answer="0">
+<div class="qhead"><span class="num">Q2</span><span class="topic">Interpreter &amp; comments</span></div>
+<pre class="code">x = 1  # x = 2
+&quot;&quot;&quot;
+x = 3
+&quot;&quot;&quot;
+print(x)  # print(x + 1)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>1</pre></button><button class="opt"><span class="k">B</span><pre>2</pre></button><button class="opt"><span class="k">C</span><pre>3</pre></button><button class="opt"><span class="k">D</span><pre>4</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Cross out everything that is a comment or inside the triple quotes.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li><code>x = 1</code> runs. The <code># x = 2</code> part is a comment.</li><li><code>x = 3</code> is inside a triple-quoted string, so it is only text and does not run.</li><li><code>print(x)</code> runs and prints 1. The rest of that line is a comment.</li></ol></div></article><article class="q" id="q3" data-topic="variables-types" data-answer="1">
+<div class="qhead"><span class="num">Q3</span><span class="topic">Variables &amp; types</span></div>
+<pre class="code">x = 5
+x = x + 2
+x = str(x) + &quot;5&quot;
+print(x)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>12</pre></button><button class="opt"><span class="k">B</span><pre>75</pre></button><button class="opt"><span class="k">C</span><pre>&#x27;75&#x27;</pre></button><button class="opt"><span class="k">D</span><pre>TypeError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> After line 2, x is 7. What does <code>str(7)</code> give, and what does <code>+</code> do with two strings?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>x = 5, then x = 5 + 2 = 7.</li><li><code>str(7)</code> is the text <code>"7"</code>, and <code>"7" + "5"</code> joins them into <code>"75"</code>.</li><li><code>print</code> shows strings without quotes, so the output is 75.</li></ol></div></article><article class="q" id="q4" data-topic="variables-types" data-answer="1">
+<div class="qhead"><span class="num">Q4</span><span class="topic">Variables &amp; types</span></div>
+<pre class="code">print(type(10 / 2))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>&lt;class &#x27;int&#x27;&gt;</pre></button><button class="opt"><span class="k">B</span><pre>&lt;class &#x27;float&#x27;&gt;</pre></button><button class="opt"><span class="k">C</span><pre>5</pre></button><button class="opt"><span class="k">D</span><pre>5.0</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> In Python 3, does <code>/</code> ever return an int?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li><code>10 / 2</code> is 5.0, because <code>/</code> always produces a float.</li><li><code>type(5.0)</code> is <code>&lt;class 'float'&gt;</code>.</li></ol></div></article><article class="q" id="q5" data-topic="variables-types" data-answer="1">
+<div class="qhead"><span class="num">Q5</span><span class="topic">Variables &amp; types</span></div>
+<pre class="code">a = None
+print(type(a), type(int))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>&lt;class &#x27;NoneType&#x27;&gt; &lt;class &#x27;int&#x27;&gt;</pre></button><button class="opt"><span class="k">B</span><pre>&lt;class &#x27;NoneType&#x27;&gt; &lt;class &#x27;type&#x27;&gt;</pre></button><button class="opt"><span class="k">C</span><pre>None &lt;class &#x27;type&#x27;&gt;</pre></button><button class="opt"><span class="k">D</span><pre>&lt;class &#x27;None&#x27;&gt; &lt;class &#x27;int&#x27;&gt;</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>int</code> is a type itself. What is the type of a type?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>The type of <code>None</code> is called <code>NoneType</code>.</li><li><code>int</code> is a class. Every class is of type <code>type</code>.</li></ol></div></article><article class="q" id="q6" data-topic="variables-types" data-answer="1">
+<div class="qhead"><span class="num">Q6</span><span class="topic">Variables &amp; types</span></div>
+<pre class="code">a = 3
+b = a
+a = a * 2
+print(a, b)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>6 6</pre></button><button class="opt"><span class="k">B</span><pre>6 3</pre></button><button class="opt"><span class="k">C</span><pre>3 6</pre></button><button class="opt"><span class="k">D</span><pre>3 3</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Does changing <code>a</code> later reach back and change <code>b</code>?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li><code>b = a</code> copies the current value 3 into <code>b</code>.</li><li><code>a = a * 2</code> makes <code>a</code> 6. <code>b</code> still holds 3.</li></ol></div></article><article class="q" id="q7" data-topic="numbers-booleans" data-answer="1">
+<div class="qhead"><span class="num">Q7</span><span class="topic">Numbers &amp; booleans</span></div>
+<pre class="code">print(17 // 5, 17 % 5, 2 ** 3)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>3.4 2 6</pre></button><button class="opt"><span class="k">B</span><pre>3 2 8</pre></button><button class="opt"><span class="k">C</span><pre>3 2 6</pre></button><button class="opt"><span class="k">D</span><pre>4 2 8</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>//</code> counts whole groups, <code>%</code> gives what is left over, <code>**</code> is the power.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>5 goes into 17 three whole times, so 17 // 5 = 3.</li><li>3 × 5 = 15, and 17 − 15 leaves 2, so 17 % 5 = 2.</li><li>2 ** 3 = 2 × 2 × 2 = 8.</li></ol></div></article><article class="q" id="q8" data-topic="numbers-booleans" data-answer="2">
+<div class="qhead"><span class="num">Q8</span><span class="topic">Numbers &amp; booleans</span></div>
+<pre class="code">print(-7 // 2)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>-3</pre></button><button class="opt"><span class="k">B</span><pre>-3.5</pre></button><button class="opt"><span class="k">C</span><pre>-4</pre></button><button class="opt"><span class="k">D</span><pre>3</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>//</code> rounds <em>down</em> (toward minus infinity), not toward zero.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>−7 / 2 = −3.5.</li><li>Rounding −3.5 down gives −4 (−4 is smaller than −3.5).</li></ol></div></article><article class="q" id="q9" data-topic="numbers-booleans" data-answer="1">
+<div class="qhead"><span class="num">Q9</span><span class="topic">Numbers &amp; booleans</span></div>
+<pre class="code">print(1 &lt; 2 &gt;= 3, 1 &lt; 2 &lt; 3)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>True True</pre></button><button class="opt"><span class="k">B</span><pre>False True</pre></button><button class="opt"><span class="k">C</span><pre>True False</pre></button><button class="opt"><span class="k">D</span><pre>False False</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Split each chain into pairs joined with <code>and</code>.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li><code>1 &lt; 2 &gt;= 3</code> means <code>1 &lt; 2 and 2 &gt;= 3</code>, which is True and False, so False.</li><li><code>1 &lt; 2 &lt; 3</code> means <code>1 &lt; 2 and 2 &lt; 3</code>, which is True and True, so True.</li></ol></div></article><article class="q" id="q10" data-topic="numbers-booleans" data-answer="2">
+<div class="qhead"><span class="num">Q10</span><span class="topic">Numbers &amp; booleans</span></div>
+<pre class="code">print(True + True + False)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>TrueTrueFalse</pre></button><button class="opt"><span class="k">B</span><pre>True</pre></button><button class="opt"><span class="k">C</span><pre>2</pre></button><button class="opt"><span class="k">D</span><pre>TypeError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>bool</code> is a subtype of <code>int</code>.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>True behaves like 1 and False behaves like 0.</li><li>1 + 1 + 0 = 2.</li></ol></div></article><article class="q" id="q11" data-topic="numbers-booleans" data-answer="1">
+<div class="qhead"><span class="num">Q11</span><span class="topic">Numbers &amp; booleans</span></div>
+<pre class="code">print(10 / 4 * 2)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>5</pre></button><button class="opt"><span class="k">B</span><pre>5.0</pre></button><button class="opt"><span class="k">C</span><pre>1.25</pre></button><button class="opt"><span class="k">D</span><pre>4</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>/</code> and <code>*</code> have the same priority, so work from left to right.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>10 / 4 = 2.5 (a float).</li><li>2.5 * 2 = 5.0. It stays a float.</li></ol></div></article><article class="q" id="q12" data-topic="numbers-booleans" data-answer="0">
+<div class="qhead"><span class="num">Q12</span><span class="topic">Numbers &amp; booleans</span></div>
+<pre class="code">print(not (3 &gt; 2 and 2 &gt; 5) or False)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>True</pre></button><button class="opt"><span class="k">B</span><pre>False</pre></button><button class="opt"><span class="k">C</span><pre>None</pre></button><button class="opt"><span class="k">D</span><pre>SyntaxError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Work from the inside of the parentheses outwards.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>3 &gt; 2 is True and 2 &gt; 5 is False, so <code>True and False</code> is False.</li><li><code>not False</code> is True.</li><li><code>True or False</code> is True.</li></ol></div></article><article class="q" id="q13" data-topic="strings" data-answer="1">
+<div class="qhead"><span class="num">Q13</span><span class="topic">Strings</span></div>
+<pre class="code">s = &#x27;Python&#x27;
+print(s[1], s[-2])</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>P n</pre></button><button class="opt"><span class="k">B</span><pre>y o</pre></button><button class="opt"><span class="k">C</span><pre>y h</pre></button><button class="opt"><span class="k">D</span><pre>P o</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Number the letters: P0 y1 t2 h3 o4 n5, and from the end n−1 o−2.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>s[1] is 'y'.</li><li>s[-2] is the second letter from the end, 'o'.</li></ol></div></article><article class="q" id="q14" data-topic="strings" data-answer="1">
+<div class="qhead"><span class="num">Q14</span><span class="topic">Strings</span></div>
+<pre class="code">s = &#x27;Arthur&#x27;
+print(s[1:5:2])</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>rth</pre></button><button class="opt"><span class="k">B</span><pre>rh</pre></button><button class="opt"><span class="k">C</span><pre>rtu</pre></button><button class="opt"><span class="k">D</span><pre>ru</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Start at position 1, stop <em>before</em> 5, and jump by 2.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>Positions: A0 r1 t2 h3 u4 r5.</li><li>Take positions 1 and 3, giving 'r' and 'h'. Position 5 is not included.</li></ol></div></article><article class="q" id="q15" data-topic="strings" data-answer="0">
+<div class="qhead"><span class="num">Q15</span><span class="topic">Strings</span></div>
+<pre class="code">s = &quot;abcdef&quot;
+print(s[::-2])</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>fdb</pre></button><button class="opt"><span class="k">B</span><pre>eca</pre></button><button class="opt"><span class="k">C</span><pre>fedcba</pre></button><button class="opt"><span class="k">D</span><pre>ace</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> A negative step with no start begins from the <em>last</em> character.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>Start at 'f' (position 5) and walk backwards in steps of 2.</li><li>Positions 5, 3, 1 give 'f', 'd', 'b'.</li></ol></div></article><article class="q" id="q16" data-topic="strings" data-answer="1">
+<div class="qhead"><span class="num">Q16</span><span class="topic">Strings</span></div>
+<pre class="code">print(&quot;ab&quot; * 3 + &quot;c&quot;)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>abc abc abc</pre></button><button class="opt"><span class="k">B</span><pre>abababc</pre></button><button class="opt"><span class="k">C</span><pre>abcabcabc</pre></button><button class="opt"><span class="k">D</span><pre>TypeError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>*</code> runs before <code>+</code>.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>"ab" * 3 = "ababab".</li><li>Then + "c" gives "abababc".</li></ol></div></article><article class="q" id="q17" data-topic="strings" data-answer="1">
+<div class="qhead"><span class="num">Q17</span><span class="topic">Strings</span></div>
+<pre class="code">print(int(&quot;4&quot;) + float(&quot;2.5&quot;))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>42.5</pre></button><button class="opt"><span class="k">B</span><pre>6.5</pre></button><button class="opt"><span class="k">C</span><pre>6</pre></button><button class="opt"><span class="k">D</span><pre>TypeError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> After converting, are these strings or numbers?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>int("4") is the number 4 and float("2.5") is the number 2.5.</li><li>4 + 2.5 = 6.5. Adding an int and a float gives a float.</li></ol></div></article><article class="q" id="q18" data-topic="strings" data-answer="0">
+<div class="qhead"><span class="num">Q18</span><span class="topic">Strings</span></div>
+<pre class="code">s = &quot;Hello world! &quot;
+print(s.strip().lower().find(&quot;o&quot;))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>4</pre></button><button class="opt"><span class="k">B</span><pre>7</pre></button><button class="opt"><span class="k">C</span><pre>-1</pre></button><button class="opt"><span class="k">D</span><pre>5</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Apply the methods one by one from left to right, then find the <em>first</em> 'o'.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>strip() gives "Hello world!".</li><li>lower() gives "hello world!".</li><li>The first 'o' is at position 4 (h0 e1 l2 l3 o4).</li></ol></div></article><article class="q" id="q19" data-topic="strings" data-answer="1">
+<div class="qhead"><span class="num">Q19</span><span class="topic">Strings</span></div>
+<pre class="code">print(&quot;, &quot;.join(&quot;a-b-c&quot;.split(&quot;-&quot;)))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>a-b-c</pre></button><button class="opt"><span class="k">B</span><pre>a, b, c</pre></button><button class="opt"><span class="k">C</span><pre>[&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]</pre></button><button class="opt"><span class="k">D</span><pre>a,b,c</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>split</code> breaks the string into a list, and <code>join</code> glues the list back together.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>"a-b-c".split("-") gives ['a', 'b', 'c'].</li><li>", ".join(...) puts ", " between the items: "a, b, c".</li></ol></div></article><article class="q" id="q20" data-topic="strings" data-answer="1">
+<div class="qhead"><span class="num">Q20</span><span class="topic">Strings</span></div>
+<pre class="code">print(&quot;{1} {0}{1}&quot;.format(&quot;x&quot;, &quot;y&quot;))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>x yx</pre></button><button class="opt"><span class="k">B</span><pre>y xy</pre></button><button class="opt"><span class="k">C</span><pre>y x y</pre></button><button class="opt"><span class="k">D</span><pre>{1} {0}{1}</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>{0}</code> is the first argument ("x") and <code>{1}</code> is the second ("y").</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>Replace {1} with y and {0} with x.</li><li>"{1} {0}{1}" becomes "y xy".</li></ol></div></article><article class="q" id="q21" data-topic="strings" data-answer="1">
+<div class="qhead"><span class="num">Q21</span><span class="topic">Strings</span></div>
+<pre class="code">s = &quot;banana&quot;
+t = s.replace(&quot;an&quot;, &quot;AN&quot;)
+print(t, s)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>bANANa bANANa</pre></button><button class="opt"><span class="k">B</span><pre>bANANa banana</pre></button><button class="opt"><span class="k">C</span><pre>bANana banana</pre></button><button class="opt"><span class="k">D</span><pre>banana banana</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Can a string method change the original string?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>replace returns a <em>new</em> string with every "an" replaced: "bANANa".</li><li>Strings cannot be changed in place, so s is still "banana".</li></ol></div></article><article class="q" id="q22" data-topic="strings" data-answer="1">
+<div class="qhead"><span class="num">Q22</span><span class="topic">Strings</span></div>
+<pre class="code">print(&#x27;Isn\&#x27;t&#x27;, &quot;it?&quot;)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>Isn\&#x27;t it?</pre></button><button class="opt"><span class="k">B</span><pre>Isn&#x27;t it?</pre></button><button class="opt"><span class="k">C</span><pre>Isn&#x27;tit?</pre></button><button class="opt"><span class="k">D</span><pre>SyntaxError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> The backslash only tells Python that the quote belongs to the text. It is not printed.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>'Isn\'t' is the text Isn't.</li><li>print separates its two values with a space.</li></ol></div></article><article class="q" id="q23" data-topic="lists" data-answer="1">
+<div class="qhead"><span class="num">Q23</span><span class="topic">Lists</span></div>
+<pre class="code">nums = [3, 1, 4]
+nums.append(1)
+nums.sort()
+print(nums)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>[1, 3, 4]</pre></button><button class="opt"><span class="k">B</span><pre>[1, 1, 3, 4]</pre></button><button class="opt"><span class="k">C</span><pre>[3, 1, 4, 1]</pre></button><button class="opt"><span class="k">D</span><pre>None</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Lists keep duplicates, and sort() changes the list itself.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>After append: [3, 1, 4, 1].</li><li>After sort: [1, 1, 3, 4].</li></ol></div></article><article class="q" id="q24" data-topic="lists" data-answer="1">
+<div class="qhead"><span class="num">Q24</span><span class="topic">Lists</span></div>
+<pre class="code">a = [1, 2, 3]
+b = a
+b.append(4)
+print(a)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>[1, 2, 3]</pre></button><button class="opt"><span class="k">B</span><pre>[1, 2, 3, 4]</pre></button><button class="opt"><span class="k">C</span><pre>[4, 1, 2, 3]</pre></button><button class="opt"><span class="k">D</span><pre>None</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>b = a</code> does not copy the list. Both names point to the <em>same</em> list (think of the tuple-quirks slide about references).</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>a and b are two names for one list object.</li><li>Appending through b changes that shared list, so a shows [1, 2, 3, 4].</li></ol></div></article><article class="q" id="q25" data-topic="lists" data-answer="0">
+<div class="qhead"><span class="num">Q25</span><span class="topic">Lists</span></div>
+<pre class="code">combo = [[&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;], [2, 3, 5, 7]]
+print(combo[1][1:3], combo[0][-1])</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>[3, 5] c</pre></button><button class="opt"><span class="k">B</span><pre>[2, 3] c</pre></button><button class="opt"><span class="k">C</span><pre>[3, 5, 7] a</pre></button><button class="opt"><span class="k">D</span><pre>[&#x27;b&#x27;, &#x27;c&#x27;] 7</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> First pick the inner list, then index or slice inside it.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>combo[1] is [2, 3, 5, 7], and slicing [1:3] gives positions 1 and 2: [3, 5].</li><li>combo[0] is ['a', 'b', 'c'], and [-1] is 'c'.</li></ol></div></article><article class="q" id="q26" data-topic="lists" data-answer="0">
+<div class="qhead"><span class="num">Q26</span><span class="topic">Lists</span></div>
+<pre class="code">L = [10, 20, 30, 40]
+x = L.pop(1)
+L.insert(0, x)
+print(L)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>[20, 10, 30, 40]</pre></button><button class="opt"><span class="k">B</span><pre>[10, 20, 30, 40]</pre></button><button class="opt"><span class="k">C</span><pre>[10, 10, 30, 40]</pre></button><button class="opt"><span class="k">D</span><pre>[30, 10, 20, 40]</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> pop(1) removes the item at <em>position</em> 1 and returns it.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>L.pop(1) removes 20, so x = 20 and L = [10, 30, 40].</li><li>insert(0, 20) puts it at the front: [20, 10, 30, 40].</li></ol></div></article><article class="q" id="q27" data-topic="lists" data-answer="0">
+<div class="qhead"><span class="num">Q27</span><span class="topic">Lists</span></div>
+<pre class="code">print(len([1, [2, 3], &quot;four&quot;]))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>3</pre></button><button class="opt"><span class="k">B</span><pre>4</pre></button><button class="opt"><span class="k">C</span><pre>5</pre></button><button class="opt"><span class="k">D</span><pre>7</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> len counts the top-level items only.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>The items are 1, the list [2, 3], and the string "four".</li><li>That is 3 items.</li></ol></div></article><article class="q" id="q28" data-topic="lists" data-answer="1">
+<div class="qhead"><span class="num">Q28</span><span class="topic">Lists</span></div>
+<pre class="code">for i, color in enumerate([&#x27;red&#x27;, &#x27;green&#x27;]):
+    print(i, color)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>1 red
+2 green</pre></button><button class="opt"><span class="k">B</span><pre>0 red
+1 green</pre></button><button class="opt"><span class="k">C</span><pre>red 0
+green 1</pre></button><button class="opt"><span class="k">D</span><pre>0 1
+red green</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> enumerate gives (index, item) pairs and starts at 0.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>First turn: i = 0, color = 'red'.</li><li>Second turn: i = 1, color = 'green'.</li></ol></div></article><article class="q" id="q29" data-topic="dictionaries" data-answer="0">
+<div class="qhead"><span class="num">Q29</span><span class="topic">Dictionaries</span></div>
+<pre class="code">d = {&quot;a&quot;: 1, &quot;b&quot;: 2}
+d[&quot;a&quot;] = 10
+d[&quot;c&quot;] = 3
+print(len(d), d[&quot;a&quot;])</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>3 10</pre></button><button class="opt"><span class="k">B</span><pre>4 10</pre></button><button class="opt"><span class="k">C</span><pre>3 1</pre></button><button class="opt"><span class="k">D</span><pre>2 10</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Assigning to an existing key changes it. Assigning to a new key adds it.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>d["a"] = 10 changes the value of a.</li><li>d["c"] = 3 adds a third key.</li><li>len(d) is 3 and d["a"] is 10.</li></ol></div></article><article class="q" id="q30" data-topic="dictionaries" data-answer="0">
+<div class="qhead"><span class="num">Q30</span><span class="topic">Dictionaries</span></div>
+<pre class="code">d = {&quot;CS&quot;: [106, 107]}
+print(len(d.get(&quot;MATH&quot;, [])), d.get(&quot;X&quot;))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>0 None</pre></button><button class="opt"><span class="k">B</span><pre>KeyError</pre></button><button class="opt"><span class="k">C</span><pre>0 X</pre></button><button class="opt"><span class="k">D</span><pre>2 None</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> get() never raises KeyError. What is its default when you do not give one?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>"MATH" is missing, so get returns the default [], and len([]) is 0.</li><li>"X" is missing and no default was given, so get returns None.</li></ol></div></article><article class="q" id="q31" data-topic="dictionaries" data-answer="2">
+<div class="qhead"><span class="num">Q31</span><span class="topic">Dictionaries</span></div>
+<pre class="code">d = {&quot;one&quot;: 1, &quot;two&quot;: 2}
+print(d[&quot;three&quot;])</pre><p class="ask">What happens?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>None</pre></button><button class="opt"><span class="k">B</span><pre>0</pre></button><button class="opt"><span class="k">C</span><pre>KeyError</pre></button><button class="opt"><span class="k">D</span><pre>3</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Square brackets with a missing key do not return a default.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>"three" is not a key in d.</li><li>d["three"] raises KeyError (use d.get("three") to avoid it).</li></ol></div></article><article class="q" id="q32" data-topic="dictionaries" data-answer="0">
+<div class="qhead"><span class="num">Q32</span><span class="topic">Dictionaries</span></div>
+<pre class="code">d = {&quot;x&quot;: 1, &quot;y&quot;: 2, &quot;z&quot;: 3}
+v = d.pop(&quot;y&quot;)
+print(v, list(d.keys()))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>2 [&#x27;x&#x27;, &#x27;z&#x27;]</pre></button><button class="opt"><span class="k">B</span><pre>y [&#x27;x&#x27;, &#x27;z&#x27;]</pre></button><button class="opt"><span class="k">C</span><pre>2 [&#x27;x&#x27;, &#x27;y&#x27;, &#x27;z&#x27;]</pre></button><button class="opt"><span class="k">D</span><pre>(&#x27;y&#x27;, 2) [&#x27;x&#x27;, &#x27;z&#x27;]</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> pop(key) removes the key and returns its <em>value</em>.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>d.pop("y") returns 2 and removes "y".</li><li>The keys left are ['x', 'z'].</li></ol></div></article><article class="q" id="q33" data-topic="dictionaries" data-answer="1">
+<div class="qhead"><span class="num">Q33</span><span class="topic">Dictionaries</span></div>
+<pre class="code">d = {&quot;a&quot;: 1}
+print((&quot;a&quot;, 1) in d.items(), 1 in d)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>True True</pre></button><button class="opt"><span class="k">B</span><pre>True False</pre></button><button class="opt"><span class="k">C</span><pre>False True</pre></button><button class="opt"><span class="k">D</span><pre>False False</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>x in d</code> looks at the keys only.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>items() contains the pair ('a', 1), so that is True.</li><li>1 is a value, not a key, so <code>1 in d</code> is False.</li></ol></div></article><article class="q" id="q34" data-topic="dictionaries" data-answer="1">
+<div class="qhead"><span class="num">Q34</span><span class="topic">Dictionaries</span></div>
+<pre class="code">d = {&quot;a&quot;: 1, &quot;b&quot;: 2}
+for k, v in d.items():
+    print(k * v, end=&quot; &quot;)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>1 2 </pre></button><button class="opt"><span class="k">B</span><pre>a bb </pre></button><button class="opt"><span class="k">C</span><pre>a b </pre></button><button class="opt"><span class="k">D</span><pre>TypeError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>k</code> is a string and <code>v</code> is a number. What does string × number do?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>First turn: "a" * 1 = "a".</li><li>Second turn: "b" * 2 = "bb".</li><li>end=" " puts a space after each, so the output is "a bb ".</li></ol></div></article><article class="q" id="q35" data-topic="tuples" data-answer="2">
+<div class="qhead"><span class="num">Q35</span><span class="topic">Tuples</span></div>
+<pre class="code">t = (1, 2, 3)
+t[0] = 5
+print(t)</pre><p class="ask">What happens?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>(5, 2, 3)</pre></button><button class="opt"><span class="k">B</span><pre>(1, 2, 3)</pre></button><button class="opt"><span class="k">C</span><pre>TypeError</pre></button><button class="opt"><span class="k">D</span><pre>IndexError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Tuples are immutable.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>Assigning to an item of a tuple is not allowed.</li><li>Python raises TypeError on line 2, and print never runs.</li></ol></div></article><article class="q" id="q36" data-topic="tuples" data-answer="0">
+<div class="qhead"><span class="num">Q36</span><span class="topic">Tuples</span></div>
+<pre class="code">x, y = 5, 6
+x, y = y, x + y
+print(x, y)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>6 11</pre></button><button class="opt"><span class="k">B</span><pre>6 12</pre></button><button class="opt"><span class="k">C</span><pre>11 6</pre></button><button class="opt"><span class="k">D</span><pre>6 6</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> The whole right side is calculated <em>before</em> anything is assigned.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>With x = 5 and y = 6, the right side is (6, 5 + 6) = (6, 11).</li><li>Then x = 6 and y = 11.</li></ol></div></article><article class="q" id="q37" data-topic="tuples" data-answer="1">
+<div class="qhead"><span class="num">Q37</span><span class="topic">Tuples</span></div>
+<pre class="code">t = (&quot;value&quot;)
+print(type(t), len(t))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>&lt;class &#x27;tuple&#x27;&gt; 1</pre></button><button class="opt"><span class="k">B</span><pre>&lt;class &#x27;str&#x27;&gt; 5</pre></button><button class="opt"><span class="k">C</span><pre>&lt;class &#x27;tuple&#x27;&gt; 5</pre></button><button class="opt"><span class="k">D</span><pre>&lt;class &#x27;str&#x27;&gt; 1</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Without a comma, parentheses only group things.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>("value") is just the string "value".</li><li>It is a str with 5 characters. A one-item tuple needs a comma: ("value",).</li></ol></div></article><article class="q" id="q38" data-topic="tuples" data-answer="1">
+<div class="qhead"><span class="num">Q38</span><span class="topic">Tuples</span></div>
+<pre class="code">v = ([1], [2])
+v[0].append(9)
+print(v)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>TypeError</pre></button><button class="opt"><span class="k">B</span><pre>([1, 9], [2])</pre></button><button class="opt"><span class="k">C</span><pre>([1], [2], 9)</pre></button><button class="opt"><span class="k">D</span><pre>([1], [2])</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> The tuple cannot change which objects it holds, but can those objects change?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>v[0] is a list, and lists are mutable.</li><li>Appending 9 to it is allowed, giving ([1, 9], [2]).</li></ol></div></article><article class="q" id="q39" data-topic="tuples" data-answer="0">
+<div class="qhead"><span class="num">Q39</span><span class="topic">Tuples</span></div>
+<pre class="code">def f():
+    return 1, 2
+a = f()
+print(type(a), a[1])</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>&lt;class &#x27;tuple&#x27;&gt; 2</pre></button><button class="opt"><span class="k">B</span><pre>&lt;class &#x27;int&#x27;&gt; 1</pre></button><button class="opt"><span class="k">C</span><pre>&lt;class &#x27;list&#x27;&gt; 2</pre></button><button class="opt"><span class="k">D</span><pre>TypeError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Comma-separated values after <code>return</code> are packed into a tuple.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>f() returns the tuple (1, 2).</li><li>a[1] is 2.</li></ol></div></article><article class="q" id="q40" data-topic="sets" data-answer="1">
+<div class="qhead"><span class="num">Q40</span><span class="topic">Sets</span></div>
+<pre class="code">print(len(set(&quot;mississippi&quot;)))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>11</pre></button><button class="opt"><span class="k">B</span><pre>4</pre></button><button class="opt"><span class="k">C</span><pre>3</pre></button><button class="opt"><span class="k">D</span><pre>5</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> A set keeps each distinct value once.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>The distinct letters are m, i, s, p.</li><li>That is 4.</li></ol></div></article><article class="q" id="q41" data-topic="sets" data-answer="0">
+<div class="qhead"><span class="num">Q41</span><span class="topic">Sets</span></div>
+<pre class="code">a = {1, 2, 3, 4}
+b = {3, 4, 5}
+print(sorted(a - b), sorted(a &amp; b))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>[1, 2] [3, 4]</pre></button><button class="opt"><span class="k">B</span><pre>[5] [3, 4]</pre></button><button class="opt"><span class="k">C</span><pre>[1, 2, 5] [3, 4]</pre></button><button class="opt"><span class="k">D</span><pre>[1, 2] [1, 2, 3, 4, 5]</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>-</code> means in a but not in b, and <code>&amp;</code> means in both.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>a − b = {1, 2}.</li><li>a &amp; b = {3, 4}.</li></ol></div></article><article class="q" id="q42" data-topic="sets" data-answer="1">
+<div class="qhead"><span class="num">Q42</span><span class="topic">Sets</span></div>
+<pre class="code">s = {1, 2}
+s.add(2)
+s.discard(9)
+print(len(s))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>3</pre></button><button class="opt"><span class="k">B</span><pre>2</pre></button><button class="opt"><span class="k">C</span><pre>KeyError</pre></button><button class="opt"><span class="k">D</span><pre>4</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Adding something already in the set changes nothing. discard never raises an error.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>add(2): 2 is already there, so s is still {1, 2}.</li><li>discard(9): 9 is not there, so nothing happens and there is no error.</li><li>len(s) = 2.</li></ol></div></article><article class="q" id="q43" data-topic="sets" data-answer="1">
+<div class="qhead"><span class="num">Q43</span><span class="topic">Sets</span></div>
+<pre class="code">a = set(&quot;abc&quot;)
+b = set(&quot;bcd&quot;)
+print(sorted(a ^ b))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>[&#x27;b&#x27;, &#x27;c&#x27;]</pre></button><button class="opt"><span class="k">B</span><pre>[&#x27;a&#x27;, &#x27;d&#x27;]</pre></button><button class="opt"><span class="k">C</span><pre>[&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;, &#x27;d&#x27;]</pre></button><button class="opt"><span class="k">D</span><pre>[&#x27;a&#x27;]</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> <code>^</code> (symmetric difference) keeps what is in exactly one of the sets.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>b and c are in both, so they are dropped.</li><li>a is only in the first set and d only in the second: ['a', 'd'].</li></ol></div></article><article class="q" id="q44" data-topic="control-flow-i-o" data-answer="1">
+<div class="qhead"><span class="num">Q44</span><span class="topic">Control flow &amp; I/O</span></div>
+<pre class="code">x = 0
+if x:
+    print(&quot;A&quot;)
+elif x == 0:
+    print(&quot;B&quot;)
+else:
+    print(&quot;C&quot;)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>A</pre></button><button class="opt"><span class="k">B</span><pre>B</pre></button><button class="opt"><span class="k">C</span><pre>C</pre></button><button class="opt"><span class="k">D</span><pre>A B</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Is 0 truthy or falsy?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>0 is falsy, so the <code>if x:</code> branch is skipped.</li><li><code>x == 0</code> is True, so B is printed and the rest of the chain is skipped.</li></ol></div></article><article class="q" id="q45" data-topic="control-flow-i-o" data-answer="1">
+<div class="qhead"><span class="num">Q45</span><span class="topic">Control flow &amp; I/O</span></div>
+<pre class="code">print(bool([]), bool([0]), bool(&quot;&quot;), bool(&quot; &quot;))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>False False False False</pre></button><button class="opt"><span class="k">B</span><pre>False True False True</pre></button><button class="opt"><span class="k">C</span><pre>False False False True</pre></button><button class="opt"><span class="k">D</span><pre>True True False True</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Only <em>empty</em> containers and strings are falsy, whatever they contain.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>[] is empty, so False.</li><li>[0] has one item, so True.</li><li>"" is empty, so False.</li><li>" " contains a space, so True.</li></ol></div></article><article class="q" id="q46" data-topic="control-flow-i-o" data-answer="1">
+<div class="qhead"><span class="num">Q46</span><span class="topic">Control flow &amp; I/O</span></div>
+<pre class="code">n = 15
+if n % 3 == 0:
+    print(&quot;Fizz&quot;)
+if n % 5 == 0:
+    print(&quot;Buzz&quot;)
+else:
+    print(n)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>Fizz</pre></button><button class="opt"><span class="k">B</span><pre>Fizz
+Buzz</pre></button><button class="opt"><span class="k">C</span><pre>Buzz</pre></button><button class="opt"><span class="k">D</span><pre>Fizz
+15</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> These are two <em>separate</em> if statements, not one if/elif chain.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>15 % 3 == 0, so Fizz is printed.</li><li>The second if is checked on its own: 15 % 5 == 0, so Buzz is printed and the else is skipped.</li></ol></div></article><article class="q" id="q47" data-topic="control-flow-i-o" data-answer="1">
+<div class="qhead"><span class="num">Q47</span><span class="topic">Control flow &amp; I/O</span></div>
+<div class="label">File: knights.txt</div><pre class="out">Lancelot 6 0
+Galahad 7 12
+Geraint 3 1
+Mordred 0 0</pre><pre class="code">f = open(&quot;knights.txt&quot;)
+for line in f:
+    data = line.split(&#x27; &#x27;)
+    name = data[0]
+    wins = int(data[1])
+    losses = int(data[2])
+    win_percent = 100 * wins / (wins + losses)
+    print(&quot;%s: Wins %.2f&quot; % (name, win_percent))
+f.close()</pre><p class="ask"><code>knights.txt</code> holds the four lines from the lecture (Lancelot 6 0, Galahad 7 12, Geraint 3 1, Mordred 0 0). What is the output?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>Lancelot: Wins 100.00
+Galahad: Wins 36.84
+Geraint: Wins 75.00
+Mordred: Wins 0.00</pre></button><button class="opt"><span class="k">B</span><pre>Lancelot: Wins 100.00
+Galahad: Wins 36.84
+Geraint: Wins 75.00
+ZeroDivisionError</pre></button><button class="opt"><span class="k">C</span><pre>Lancelot: Wins 6.00
+Galahad: Wins 7.00
+Geraint: Wins 3.00
+Mordred: Wins 0.00</pre></button><button class="opt"><span class="k">D</span><pre>ValueError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Look closely at Mordred's line: <code>Mordred 0 0</code>.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>Lancelot: 100 × 6 / 6 = 100.00.</li><li>Galahad: 100 × 7 / 19 ≈ 36.84.</li><li>Geraint: 100 × 3 / 4 = 75.00.</li><li>Mordred: wins + losses = 0, and dividing by 0 raises ZeroDivisionError.</li></ol></div></article><article class="q" id="q48" data-topic="control-flow-i-o" data-answer="1">
+<div class="qhead"><span class="num">Q48</span><span class="topic">Control flow &amp; I/O</span></div>
+<pre class="code">word = &quot;Level&quot;
+print(word == word[::-1], word.lower() == word.lower()[::-1])</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>True True</pre></button><button class="opt"><span class="k">B</span><pre>False True</pre></button><button class="opt"><span class="k">C</span><pre>False False</pre></button><button class="opt"><span class="k">D</span><pre>True False</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Uppercase 'L' and lowercase 'l' are different characters.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>"Level" reversed is "leveL", which is not equal, so False.</li><li>Lowercased, "level" reversed is "level", so True.</li></ol></div></article><article class="q" id="q49" data-topic="loops" data-answer="2">
+<div class="qhead"><span class="num">Q49</span><span class="topic">Loops</span></div>
+<pre class="code">for ch in &quot;abc&quot;:
+    print(ch, end=&quot;-&quot;)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>a
+b
+c</pre></button><button class="opt"><span class="k">B</span><pre>a-b-c</pre></button><button class="opt"><span class="k">C</span><pre>a-b-c-</pre></button><button class="opt"><span class="k">D</span><pre>-a-b-c</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> end is printed after <em>every</em> character, including the last one.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>Each print writes the letter followed by "-".</li><li>That gives a- b- c- joined together: a-b-c-.</li></ol></div></article><article class="q" id="q50" data-topic="loops" data-answer="0">
+<div class="qhead"><span class="num">Q50</span><span class="topic">Loops</span></div>
+<pre class="code">print(list(range(2, 12, 3)))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>[2, 5, 8, 11]</pre></button><button class="opt"><span class="k">B</span><pre>[2, 5, 8]</pre></button><button class="opt"><span class="k">C</span><pre>[3, 6, 9]</pre></button><button class="opt"><span class="k">D</span><pre>[2, 5, 8, 11, 14]</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Start at 2, add 3 each time, and stop <em>before</em> reaching 12.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>2, 5, 8, 11 are all below 12.</li><li>The next one would be 14, which is not below 12.</li></ol></div></article><article class="q" id="q51" data-topic="loops" data-answer="0">
+<div class="qhead"><span class="num">Q51</span><span class="topic">Loops</span></div>
+<pre class="code">print(list(range(10, 0, -4)))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>[10, 6, 2]</pre></button><button class="opt"><span class="k">B</span><pre>[10, 6, 2, -2]</pre></button><button class="opt"><span class="k">C</span><pre>[]</pre></button><button class="opt"><span class="k">D</span><pre>[6, 2]</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> With a negative step, you count down and stop before passing the stop value.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>10, then 6, then 2.</li><li>The next one, −2, has gone past 0, so it is not included.</li></ol></div></article><article class="q" id="q52" data-topic="loops" data-answer="0">
+<div class="qhead"><span class="num">Q52</span><span class="topic">Loops</span></div>
+<pre class="code">for c in &quot;BANANA&quot;:
+    if c == &quot;N&quot;:
+        break
+    print(c, end=&quot;&quot;)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>BA</pre></button><button class="opt"><span class="k">B</span><pre>BAAA</pre></button><button class="opt"><span class="k">C</span><pre>B</pre></button><button class="opt"><span class="k">D</span><pre>BANANA</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> break leaves the loop the first time it runs.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>B is printed, then A is printed.</li><li>At the first N, break ends the loop, so nothing else is printed.</li></ol></div></article><article class="q" id="q53" data-topic="loops" data-answer="0">
+<div class="qhead"><span class="num">Q53</span><span class="topic">Loops</span></div>
+<pre class="code">for c in &quot;BANANA&quot;:
+    if c == &quot;A&quot;:
+        continue
+    print(c, end=&quot;&quot;)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>BNN</pre></button><button class="opt"><span class="k">B</span><pre>B</pre></button><button class="opt"><span class="k">C</span><pre>AAA</pre></button><button class="opt"><span class="k">D</span><pre>BANANA</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> continue skips only the current letter.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>Every A is skipped.</li><li>The letters that get printed are B, N, N.</li></ol></div></article><article class="q" id="q54" data-topic="loops" data-answer="1">
+<div class="qhead"><span class="num">Q54</span><span class="topic">Loops</span></div>
+<pre class="code">n = 1
+count = 0
+while n &lt; 100:
+    n *= 3
+    count += 1
+print(n, count)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>81 4</pre></button><button class="opt"><span class="k">B</span><pre>243 5</pre></button><button class="opt"><span class="k">C</span><pre>243 4</pre></button><button class="opt"><span class="k">D</span><pre>100 5</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> The condition is checked before each turn, using the value of n at that moment.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>n: 1 → 3 → 9 → 27 → 81 → 243, with count going 1, 2, 3, 4, 5.</li><li>243 is not below 100, so the loop stops with n = 243 and count = 5.</li></ol></div></article><article class="q" id="q55" data-topic="loops" data-answer="1">
+<div class="qhead"><span class="num">Q55</span><span class="topic">Loops</span></div>
+<pre class="code">total = 0
+for i in range(1, 5):
+    total += i
+print(total)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>15</pre></button><button class="opt"><span class="k">B</span><pre>10</pre></button><button class="opt"><span class="k">C</span><pre>4</pre></button><button class="opt"><span class="k">D</span><pre>6</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> range(1, 5) does not include 5.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>i takes the values 1, 2, 3, 4.</li><li>1 + 2 + 3 + 4 = 10.</li></ol></div></article><article class="q" id="q56" data-topic="loops" data-answer="1">
+<div class="qhead"><span class="num">Q56</span><span class="topic">Loops</span></div>
+<pre class="code">for a, b in zip([1, 2, 3], &quot;xy&quot;):
+    print(a, b, end=&quot; &quot;)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>1 x 2 y 3 </pre></button><button class="opt"><span class="k">B</span><pre>1 x 2 y </pre></button><button class="opt"><span class="k">C</span><pre>1 2 3 x y </pre></button><button class="opt"><span class="k">D</span><pre>ValueError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> zip stops when the <em>shorter</em> sequence runs out.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>The pairs are (1, 'x') and (2, 'y').</li><li>"xy" has only 2 characters, so 3 is never used.</li></ol></div></article><article class="q" id="q57" data-topic="loops" data-answer="1">
+<div class="qhead"><span class="num">Q57</span><span class="topic">Loops</span></div>
+<pre class="code">a, b = 0, 1
+for i in range(5):
+    a, b = b, a + b
+print(a)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>3</pre></button><button class="opt"><span class="k">B</span><pre>5</pre></button><button class="opt"><span class="k">C</span><pre>8</pre></button><button class="opt"><span class="k">D</span><pre>13</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Make a small table of a and b after each of the 5 turns.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>Start: (0, 1). Then (1, 1), (1, 2), (2, 3), (3, 5), (5, 8).</li><li>After 5 turns a = 5.</li></ol></div></article><article class="q" id="q58" data-topic="loops" data-answer="1">
+<div class="qhead"><span class="num">Q58</span><span class="topic">Loops</span></div>
+<pre class="code">d = {&quot;x&quot;: 3, &quot;y&quot;: 1}
+for k in d:
+    print(k, end=&quot;&quot;)</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>31</pre></button><button class="opt"><span class="k">B</span><pre>xy</pre></button><button class="opt"><span class="k">C</span><pre>x3y1</pre></button><button class="opt"><span class="k">D</span><pre>(&#x27;x&#x27;, 3)(&#x27;y&#x27;, 1)</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Looping directly over a dict is the same as looping over d.keys().</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>The keys are 'x' and 'y'.</li><li>end="" puts nothing between them: xy.</li></ol></div></article><article class="q" id="q59" data-topic="functions" data-answer="1">
+<div class="qhead"><span class="num">Q59</span><span class="topic">Functions</span></div>
+<pre class="code">def f(x):
+    x * 2
+print(f(3))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>6</pre></button><button class="opt"><span class="k">B</span><pre>None</pre></button><button class="opt"><span class="k">C</span><pre>3</pre></button><button class="opt"><span class="k">D</span><pre>Error</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Does the function ever <em>return</em> anything?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>x * 2 is calculated, but the result is thrown away.</li><li>Without a return, a function returns None.</li></ol></div></article><article class="q" id="q60" data-topic="functions" data-answer="1">
+<div class="qhead"><span class="num">Q60</span><span class="topic">Functions</span></div>
+<pre class="code">def sign(n):
+    if n &gt; 0:
+        return &quot;pos&quot;
+    return &quot;non-pos&quot;
+print(sign(0), sign(5))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>pos pos</pre></button><button class="opt"><span class="k">B</span><pre>non-pos pos</pre></button><button class="opt"><span class="k">C</span><pre>non-pos non-pos</pre></button><button class="opt"><span class="k">D</span><pre>pos non-pos</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> return ends the function at once.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>sign(0): 0 &gt; 0 is False, so it reaches return "non-pos".</li><li>sign(5): it returns "pos" straight away, and the last line never runs.</li></ol></div></article><article class="q" id="q61" data-topic="functions" data-answer="2">
+<div class="qhead"><span class="num">Q61</span><span class="topic">Functions</span></div>
+<pre class="code">def is_prime(n):
+    for i in range(2, n):
+        if n % i == 0:
+            return False
+    return True
+print(is_prime(9), is_prime(1))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>False False</pre></button><button class="opt"><span class="k">B</span><pre>True True</pre></button><button class="opt"><span class="k">C</span><pre>False True</pre></button><button class="opt"><span class="k">D</span><pre>True False</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> For n = 1, what is range(2, 1)?</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>9 % 3 == 0, so is_prime(9) returns False.</li><li>range(2, 1) is empty, so the loop never runs and is_prime(1) returns True (a bug in the lecture version).</li></ol></div></article><article class="q" id="q62" data-topic="functions" data-answer="1">
+<div class="qhead"><span class="num">Q62</span><span class="topic">Functions</span></div>
+<pre class="code">def add(a, b):
+    return a + b
+print(add(&quot;2&quot;, &quot;3&quot;), add(2, 3))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>5 5</pre></button><button class="opt"><span class="k">B</span><pre>23 5</pre></button><button class="opt"><span class="k">C</span><pre>23 23</pre></button><button class="opt"><span class="k">D</span><pre>TypeError</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> Parameters have no fixed type, so + does whatever it does for those arguments.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>"2" + "3" joins the strings: "23".</li><li>2 + 3 adds the numbers: 5.</li></ol></div></article><article class="q" id="q63" data-topic="functions" data-answer="1">
+<div class="qhead"><span class="num">Q63</span><span class="topic">Functions</span></div>
+<pre class="code">def grow(L):
+    L.append(0)
+    return len(L)
+x = [1]
+print(grow(x), grow(x))</pre><p class="ask">What is printed?</p><div class="opts"><button class="opt"><span class="k">A</span><pre>2 2</pre></button><button class="opt"><span class="k">B</span><pre>2 3</pre></button><button class="opt"><span class="k">C</span><pre>1 2</pre></button><button class="opt"><span class="k">D</span><pre>3 3</pre></button></div>
+<div class="row"><button class="btn hint-btn">💡 Hint</button></div><ul class="hints"><li class="show qhint hidden"><b>Hint.</b> The function receives the same list object both times.</li></ul>
+<div class="feedback"><b class="fb-title"></b><ol><li>First call: x becomes [1, 0] and the function returns 2.</li><li>Second call: x becomes [1, 0, 0] and the function returns 3.</li></ol></div></article><div class="pager"><a href="part9-functions.html"><small>← Previous</small>Part 9: Functions</a><a class="next" href="index.html"><small>Back to</small>All parts</a></div><footer>Based on “Intro to Python”, Lectures 1–2 (Dr. Essam Seddik). Every answer was checked by running the code in Python 3.</footer></main>
+<script>
+const KW=new Set("def return if elif else for while in not and or break continue import from as None True False del pass is lambda with".split(" "));
+const FN=new Set("print len range type int float str list dict set tuple input open enumerate zip sorted bool repr min max sum".split(" "));
+function escH(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function highlight(src){
+  const re=/(#[^\n]*)|("{3}[\s\S]*?"{3}|'{3}[\s\S]*?'{3}|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^>>>|^\.\.\.)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b/gm;
+  let out="",last=0,m;
+  while((m=re.exec(src))){
+    out+=escH(src.slice(last,m.index));last=re.lastIndex;
+    const t=escH(m[0]);
+    if(m[1])out+='<span class="t-com">'+t+'</span>';
+    else if(m[2])out+='<span class="t-str">'+t+'</span>';
+    else if(m[3])out+='<span class="t-prompt">'+t+'</span>';
+    else if(m[4])out+='<span class="t-num">'+t+'</span>';
+    else if(KW.has(m[5]))out+='<span class="t-kw">'+t+'</span>';
+    else if(FN.has(m[5]))out+='<span class="t-fn">'+t+'</span>';
+    else out+=t;
+  }
+  return out+escH(src.slice(last));
+}
+document.querySelectorAll("pre.code").forEach(p=>{p.innerHTML=highlight(p.textContent);});
+const store={get(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+const qs=[...document.querySelectorAll(".q")];
+const QKEY="pyprac-quiz";
+let saved=store.get(QKEY)||{};
+function score(){
+  const vis=qs.filter(q=>!q.classList.contains("hidden"));
+  const ans=vis.filter(q=>q.dataset.picked!==undefined);
+  const ok=ans.filter(q=>q.dataset.picked===q.dataset.answer);
+  document.getElementById("s-ans").textContent=ans.length+" / "+vis.length;
+  document.getElementById("s-ok").textContent=ok.length;
+  document.getElementById("s-pct").textContent=ans.length?Math.round(100*ok.length/ans.length)+"%":"–";
+}
+function pick(q,i,save=true){
+  q.dataset.picked=i;
+  const opts=[...q.querySelectorAll(".opt")];
+  opts.forEach((o,k)=>{o.disabled=true;if(String(k)===q.dataset.answer)o.classList.add("correct");if(String(k)===String(i)){o.classList.add("picked");if(String(k)!==q.dataset.answer)o.classList.add("incorrect");}});
+  const ok=String(i)===q.dataset.answer;
+  q.classList.add(ok?"right":"wrong");
+  const fb=q.querySelector(".feedback");fb.classList.add(ok?"ok":"bad");
+  fb.querySelector(".fb-title").textContent=ok?"✔ Correct!":"✘ Not quite. The correct answer is highlighted in green.";
+  if(save){saved[q.id]=i;store.set(QKEY,saved);}
+  score();
+}
+qs.forEach(q=>{
+  q.querySelectorAll(".opt").forEach((o,i)=>o.addEventListener("click",()=>pick(q,i)));
+  const hb=q.querySelector(".hint-btn"),ht=q.querySelector(".qhint");
+  hb.addEventListener("click",()=>{ht.classList.remove("hidden");hb.remove();});
+  if(saved[q.id]!==undefined)pick(q,saved[q.id],false);
+});
+document.querySelectorAll(".chip.filter").forEach(c=>c.addEventListener("click",()=>{
+  document.querySelectorAll(".chip.filter").forEach(x=>x.classList.toggle("on",x===c));
+  const t=c.dataset.topic;
+  qs.forEach(q=>q.classList.toggle("hidden",t!=="all"&&q.dataset.topic!==t));
+  score();
+}));
+document.getElementById("reset").addEventListener("click",()=>{if(confirm("Clear all your answers?")){saved={};store.set(QKEY,saved);location.reload();}});
+document.getElementById("wrong-only").addEventListener("click",e=>{
+  const on=e.target.classList.toggle("primary");
+  qs.forEach(q=>{if(on)q.classList.toggle("hidden",q.dataset.picked===undefined||q.dataset.picked===q.dataset.answer);else q.classList.remove("hidden");});
+  document.querySelectorAll(".chip.filter").forEach(x=>x.classList.toggle("on",x.dataset.topic==="all"));
+  score();
+});
+score();
+</script></body></html>

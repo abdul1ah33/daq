@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Part 3 · Variables and Types · Python practice</title><style>
+<title>Part 1 · Week 1 · AI &amp; Intelligent Agents · CC511 AI practice</title><style>
 :root{
   --bg:#f5f6fa; --card:#ffffff; --ink:#1b1f2e; --muted:#5d6478; --line:#e3e6ef;
   --accent:#27378f; --accent-soft:#e9ecfa; --accent-ink:#ffffff;
@@ -59,6 +59,9 @@ h2.section{border-bottom:2px solid var(--accent);padding-bottom:6px;color:var(--
 .badge.write{background:var(--accent-soft);color:var(--accent)}
 .badge.predict{background:var(--warn-soft);color:var(--warn)}
 .badge.fix{background:var(--bad-soft);color:var(--bad)}
+.badge.think{background:var(--ok-soft);color:var(--ok)}
+.answer{margin:6px 0 0}.answer ul,.answer ol{margin:4px 0;padding-left:22px}
+table.t{border-collapse:collapse;margin:8px 0;font-size:14px;width:100%}table.t th,table.t td{border:1px solid var(--line);padding:6px 8px;text-align:left}table.t th{background:var(--accent-soft)}
 .done{font-size:14px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
 .done input{width:18px;height:18px;accent-color:var(--ok)}
 .task{margin:4px 0 10px}
@@ -122,6 +125,7 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
 .opt .k{font-weight:700;color:var(--muted);min-width:1.2em}
 .opt pre{font-size:14px;white-space:pre-wrap;word-break:break-word}
 .opt:disabled{cursor:default}
+.q.concept .opt pre{font-family:inherit;font-size:15px}
 .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
 .opt.picked.incorrect{border-color:var(--bad);background:var(--bad-soft)}
 .feedback{display:none;margin-top:12px;border-radius:8px;padding:10px 14px}
@@ -132,67 +136,89 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
 .chip.filter.on{background:var(--accent);color:var(--accent-ink)}
 .hidden{display:none!important}
 @media (max-width:520px){ .ex,.q{padding:14px} pre.code,pre.out{font-size:13px} }
-</style></head>
-<body data-part="3"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">Intro to <span>Python</span> · Practice</a><div class="chips"><a class="chip" href="part1-interpreter.html" title="Part 1: Interactive Interpreter">1</a><a class="chip" href="part2-comments.html" title="Part 2: Comments">2</a><a class="chip on" href="part3-variables.html" title="Part 3: Variables and Types">3</a><a class="chip" href="part4-numbers-booleans.html" title="Part 4: Numbers and Booleans">4</a><a class="chip" href="part5-strings.html" title="Part 5: Strings">5</a><a class="chip" href="part6-data-structures.html" title="Part 6: Data Structures">6</a><a class="chip" href="part7-io-control-flow.html" title="Part 7: Console I/O and Control Flow">7</a><a class="chip" href="part8-loops.html" title="Part 8: Loops">8</a><a class="chip" href="part9-functions.html" title="Part 9: Functions">9</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">Part 3 of 9 · Lecture 1</p>
-<h1>Variables and Types</h1>
-<p class="lead">Try each exercise yourself first. If you get stuck, open the hints one at a time, and only then look at the solution.</p></section><div class="recap"><h2>Quick recap from the lecture</h2><ul><li>Create a variable by assigning to it: <code>x = 2</code>. No semicolon and no type declaration.</li><li>Python variables are <em>dynamically typed</em>: the same name can hold an <code>int</code> now and a <code>str</code> later.</li><li>Values still have a type, and <code>type(value)</code> tells you what it is: <code>&lt;class 'int'&gt;</code>, <code>&lt;class 'str'&gt;</code>, <code>&lt;class 'NoneType'&gt;</code>…</li><li>Even types are objects: <code>type(int)</code> is <code>&lt;class 'type'&gt;</code>.</li></ul></div><div class="howto"><span>💡 Hints open one step at a time</span><span>▶ Run code in the editor (needs internet the first time) or in Google Colab</span><span>✔ Tick “Solved” to track progress</span></div><div class="progress"><span id="prog-text"></span><div class="bar"><i id="prog-bar"></i></div></div><article class="ex" id="p3e1"><header><span class="num">3.1</span><span class="badge predict">Predict the output</span><h3>Same name, new type</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">What does this print?</div><div class="label">Code</div><pre class="code">x = 2
-print(x * 7)
-x = &quot;Hello, I&#x27;m &quot;
-print(x + &quot;Python!&quot;)</pre><div class="guess" data-expected="14
-Hello, I&#x27;m Python!"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> On line 2, <code>x</code> holds the number 2, so <code>*</code> multiplies.</li><li><b>Step 2.</b> Line 3 replaces the old value. Now <code>x</code> holds a string.</li><li><b>Step 3.</b> For strings, <code>+</code> joins the two pieces of text together (concatenation).</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">14
-Hello, I&#x27;m Python!</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off">x = 2
-print(x * 7)
-x = &quot;Hello, I&#x27;m &quot;
-print(x + &quot;Python!&quot;)</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p3e2"><header><span class="num">3.2</span><span class="badge predict">Predict the output</span><h3>Ask Python for the type</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">What does each line print?</div><div class="label">Code</div><pre class="code">print(type(1))
-print(type(&quot;Hello&quot;))
-print(type(3.0))
-print(type(None))
-print(type(int))
-print(type(type(int)))</pre><div class="guess" data-expected="&lt;class &#x27;int&#x27;&gt;
-&lt;class &#x27;str&#x27;&gt;
-&lt;class &#x27;float&#x27;&gt;
-&lt;class &#x27;NoneType&#x27;&gt;
-&lt;class &#x27;type&#x27;&gt;
-&lt;class &#x27;type&#x27;&gt;"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Whole numbers are <code>int</code>, numbers with a decimal point are <code>float</code>, text is <code>str</code>.</li><li><b>Step 2.</b> <code>None</code> means “no value”. Its type is called <code>NoneType</code>.</li><li><b>Step 3.</b> <code>int</code> itself is a type, and the type of any type is <code>type</code>.</li><li><b>Step 4.</b> So <code>type(int)</code> is <code>type</code>, and <code>type(type)</code> is again <code>type</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">&lt;class &#x27;int&#x27;&gt;
-&lt;class &#x27;str&#x27;&gt;
-&lt;class &#x27;float&#x27;&gt;
-&lt;class &#x27;NoneType&#x27;&gt;
-&lt;class &#x27;type&#x27;&gt;
-&lt;class &#x27;type&#x27;&gt;</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off">print(type(1))
-print(type(&quot;Hello&quot;))
-print(type(3.0))
-print(type(None))
-print(type(int))
-print(type(type(int)))</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p3e3"><header><span class="num">3.3</span><span class="badge write">Write code</span><h3>Dynamic typing in action</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Create <code>name</code> (your name), <code>age</code> (a whole number) and <code>height</code> (a decimal number). Print the type of each. Then set <code>age</code> to the string <code>"twenty"</code> and print its type again.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Assign each value: text in quotes, a whole number with no decimal point, and a number like <code>1.75</code>.</li><li><b>Step 2.</b> Use <code>print(type(name))</code> and the same for the other two.</li><li><b>Step 3.</b> Reassign with <code>age = "twenty"</code>. You do not need to declare anything new.</li><li><b>Step 4.</b> Print <code>type(age)</code> again and notice that it changed from <code>int</code> to <code>str</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">name = &quot;Sara&quot;
-age = 20
-height = 1.65
-print(type(name))
-print(type(age))
-print(type(height))
 
-age = &quot;twenty&quot;
-print(type(age))</pre><div class="label">Expected output</div><pre class="out">&lt;class &#x27;str&#x27;&gt;
-&lt;class &#x27;int&#x27;&gt;
-&lt;class &#x27;float&#x27;&gt;
-&lt;class &#x27;str&#x27;&gt;</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off"># Write your code here
-</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p3e4"><header><span class="num">3.4</span><span class="badge fix">Fix the bug</span><h3>Mixing text and numbers</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">This program crashes. Fix it so it prints <code>I am 20 years old</code>.</div><div class="label">Buggy code</div><pre class="code">age = 20
-print(&quot;I am &quot; + age + &quot; years old&quot;)</pre><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Run it and read the error type: it is a <code>TypeError</code>.</li><li><b>Step 2.</b> <code>+</code> can add two numbers or join two strings, but it cannot join a string and an <code>int</code>.</li><li><b>Step 3.</b> Turn the number into text first with <code>str(age)</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">age = 20
-print(&quot;I am &quot; + str(age) + &quot; years old&quot;)</pre><div class="label">Expected output</div><pre class="out">I am 20 years old</pre><p class="explain">Python does not guess what you meant. You have to convert the <code>int</code> to a <code>str</code> yourself.</p></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off">age = 20
-print(&quot;I am &quot; + age + &quot; years old&quot;)</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p3e5"><header><span class="num">3.5</span><span class="badge predict">Predict the output</span><h3>Does b follow a?</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">What does this print?</div><div class="label">Code</div><pre class="code">a = 5
-b = a
-a = 10
-print(a, b)</pre><div class="guess" data-expected="10 5"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Line 2 gives <code>b</code> the value that <code>a</code> has <em>at that moment</em>, which is 5.</li><li><b>Step 2.</b> Line 3 gives <code>a</code> a new value. It does not reach back and change <code>b</code>.</li><li><b>Step 3.</b> <code>print(a, b)</code> prints both values separated by a space.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">10 5</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off">a = 5
-b = a
-a = 10
-print(a, b)</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p3e6"><header><span class="num">3.6</span><span class="badge predict">Predict the output</span><h3>Python knows the type even if you don&#x27;t</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">What does this print?</div><div class="label">Code</div><pre class="code">x = 7 / 7
-print(x, type(x))
-y = 7 // 7
-print(y, type(y))</pre><div class="guess" data-expected="1.0 &lt;class &#x27;float&#x27;&gt;
-1 &lt;class &#x27;int&#x27;&gt;"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> In Python 3, <code>/</code> always gives a <code>float</code>, even when the division is exact.</li><li><b>Step 2.</b> <code>//</code> is integer division. With two ints it gives an <code>int</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">1.0 &lt;class &#x27;float&#x27;&gt;
-1 &lt;class &#x27;int&#x27;&gt;</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off">x = 7 / 7
-print(x, type(x))
-y = 7 // 7
-print(y, type(y))</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><div class="pager"><a href="part2-comments.html"><small>← Previous</small>Part 2: Comments</a><a class="next" href="part4-numbers-booleans.html"><small>Next →</small>Part 4: Numbers and Booleans</a></div><footer>Based on “Intro to Python”, Lectures 1–2 (Dr. Essam Seddik), College of Artificial Intelligence, El-Alamein.</footer></main>
+.fig{display:block;width:100%;height:auto;margin:6px auto 4px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.fig .e{stroke:var(--muted);stroke-width:1.6;fill:none}
+.fig .n{fill:var(--card);stroke:var(--ink);stroke-width:1.6}
+.fig .nmax{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8}
+.fig .nmin{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.8}
+.fig .hl{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.2}
+.fig .leaf{fill:var(--bg);stroke:var(--line);stroke-width:1.4}
+.fig text{fill:var(--ink);font-size:14px;text-anchor:middle;dominant-baseline:central}
+.fig .el{fill:var(--accent);font-size:12.5px;font-weight:600;paint-order:stroke;stroke:var(--card);stroke-width:4px}
+.fig .lv{fill:var(--muted);font-size:12px;text-anchor:start;font-weight:600;letter-spacing:.04em}
+.fig .hv{fill:var(--warn);font-size:12px;font-weight:600}
+.fig .sm{font-size:12px;fill:var(--muted)}
+.figwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 8px;margin:8px 0;overflow-x:auto}
+.wt{font-size:13px;margin:4px 0 2px}.wt th,.wt td{text-align:center;padding:4px 5px}
+.figcap{font-size:13px;color:var(--muted);margin:2px 4px 4px}
+
+.boards{display:flex;flex-wrap:wrap;gap:18px;margin:8px 0}
+table.board{border-collapse:collapse;font-variant-numeric:tabular-nums}
+table.board caption{font-size:13px;color:var(--muted);padding-bottom:4px;font-weight:600}
+table.board td{width:40px;height:40px;text-align:center;border:2px solid var(--accent);font-weight:700;font-size:18px;background:var(--card)}
+table.board td:empty{background:var(--accent-soft)}
+.board.ttt td{width:34px;height:34px;font-size:18px}
+</style></head>
+<body data-part="1"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">CC511 <span>AI</span> · Practice</a><div class="chips"><a class="chip on" href="cc511-w1-agents.html" title="Part 1: Week 1 · AI &amp; Intelligent Agents">1</a><a class="chip" href="cc511-w2-uninformed.html" title="Part 2: Week 2 · Uninformed Search">2</a><a class="chip" href="cc511-w3-informed.html" title="Part 3: Week 3 · Informed (Heuristic) Search">3</a><a class="chip" href="cc511-w4-games.html" title="Part 4: Week 4 · Games &amp; Adversarial Search">4</a><a class="chip" href="cc511-w5-6-neural-networks.html" title="Part 5: Weeks 5–6 · Neural Networks &amp; Backpropagation">5</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">Part 1 of 5 · CC511 Week 1</p>
+<h1>Week 1 · AI &amp; Intelligent Agents</h1>
+<p class="lead">Try each exercise yourself first. If you get stuck, open the hints one at a time, and only then look at the solution.</p></section><div class="recap"><h2>Quick recap from the lecture</h2><ul><li>AI = reproducing human reasoning and intelligent behaviour by computational methods. Four approaches: <b>think like humans · act like humans · think rationally · act rationally</b>.</li><li>Rational approach: always make the best decision given knowledge, time and resources, i.e. <b>maximize expected utility</b>.</li><li><b>Turing test</b> (1950): an interrogator questions it with no physical interaction; it passes if they can't tell it from a person. CAPTCHA reverses it.</li><li>Agent: <code>f: P* → A</code> (percept histories → actions). <b>Agent = Architecture + Program</b>. Specify tasks with <b>PEAS</b>.</li><li>Environment types: observable, deterministic, episodic, static, discrete, single-agent (and their opposites).</li><li>Agent types (taxi example): simple reflex → keeps track of the world (internal state) → goal-based (search &amp; planning) → utility-based (utility function).</li></ul></div><div class="howto"><span>💡 Hints open one step at a time</span><span>▶ Run code in the editor (needs internet the first time) or in Google Colab</span><span>✔ Tick “Solved” to track progress</span></div><div class="progress"><span id="prog-text"></span><div class="bar"><i id="prog-bar"></i></div></div><article class="ex" id="p1e1"><header><span class="num">1.1</span><span class="badge think">Think & answer</span><h3>Fill the 2×2 grid</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Draw the 2×2 grid of AI definitions. Then place: (a) Haugeland's “machines with minds”, (b) Rich &amp; Knight's “things at which people are better”, (c) the Turing test, (d) an agent maximizing expected utility.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Rows: think / act. Columns: like humans / rationally.</li><li><b>Step 2.</b> Haugeland is about <em>thinking</em>; Rich &amp; Knight and the Turing test are about <em>behaviour</em>.</li><li><b>Step 3.</b> Maximizing utility is the definition of the rational agent.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><table class="t"><tr><th></th><th>Like humans</th><th>Rationally</th></tr>
+          <tr><th>Think</th><td>(a) Haugeland 1985</td><td>logic, “laws of thought”</td></tr>
+          <tr><th>Act</th><td>(b) Rich &amp; Knight 1991, (c) Turing test</td><td>(d) rational agent</td></tr></table></div></details></article><article class="ex" id="p1e2"><header><span class="num">1.2</span><span class="badge think">Think & answer</span><h3>PEAS for an automated taxi</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write a PEAS description for an automated taxi driver.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> P: how do we judge a good trip? Think safety, speed, legality, comfort, profit.</li><li><b>Step 2.</b> E: what is around the taxi? A: what can it move or control? S: what does it read from the world?</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><ul><li><b>Performance</b>: safe, fast, legal, comfortable trip; maximize profit</li>
+          <li><b>Environment</b>: roads, other traffic, pedestrians, customers, weather</li>
+          <li><b>Actuators</b>: steering, accelerator, brake, signal, horn, display</li>
+          <li><b>Sensors</b>: cameras, sonar/radar, speedometer, GPS, odometer, engine sensors, keyboard/mic</li></ul></div></details></article><article class="ex" id="p1e3"><header><span class="num">1.3</span><span class="badge think">Think & answer</span><h3>Classify three environments</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">For each, decide observable/partially, deterministic/not, episodic/sequential, static/dynamic, discrete/continuous, single/multi-agent: (a) crossword puzzle, (b) taxi driving, (c) classifying X-ray images one at a time.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Crossword: you can see the whole grid and nothing changes on its own.</li><li><b>Step 2.</b> Taxi: lots of things you can't see, other agents, continuous speeds.</li><li><b>Step 3.</b> X-ray: each image is judged on its own (does one image affect the next?).</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><table class="t"><tr><th></th><th>Crossword</th><th>Taxi</th><th>X-ray</th></tr>
+          <tr><td>Observable</td><td>Fully</td><td>Partially</td><td>Fully</td></tr>
+          <tr><td>Deterministic</td><td>Yes</td><td>No</td><td>Yes</td></tr>
+          <tr><td>Episodic</td><td>Sequential</td><td>Sequential</td><td><b>Episodic</b></td></tr>
+          <tr><td>Static</td><td>Static</td><td>Dynamic</td><td>Static</td></tr>
+          <tr><td>Discrete</td><td>Discrete</td><td>Continuous</td><td>Continuous</td></tr>
+          <tr><td>Agents</td><td>Single</td><td>Multi</td><td>Single</td></tr></table></div></details></article><article class="ex" id="p1e4"><header><span class="num">1.4</span><span class="badge think">Think & answer</span><h3>Name the agent type</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Name the agent type for each taxi rule: (a) brake if the car in front brakes; (b) brake if the car in front brakes <em>and</em> we're on the freeway; (c) change lane and plan, because we must reach the hospital; (d) choose the route that gets passengers to the hospital alive and happy.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> (a) needs only the current percept.</li><li><b>Step 2.</b> (b) must remember something it can't currently see.</li><li><b>Step 3.</b> (c) has a goal; (d) measures <em>how good</em> a state is.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer">(a) Simple reflex · (b) agent that keeps track of the world (internal state) · (c) goal-based (search &amp; planning) · (d) utility-based (utility function).</div></details></article><article class="ex" id="p1e5"><header><span class="num">1.5</span><span class="badge write">Write code</span><h3>A simple reflex vacuum agent</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write <code>reflex_vacuum(location, status)</code> for the two-square world: Suck if the square is Dirty, else move Right from A and Left from B. Test it on the four possible percepts.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> The percept is a pair like <code>("A", "Dirty")</code>.</li><li><b>Step 2.</b> Check the status first: <code>if status == "Dirty": return "Suck"</code>.</li><li><b>Step 3.</b> Then <code>elif location == "A": return "Right"</code>, <code>else: return "Left"</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">def reflex_vacuum(location, status):
+    if status == &quot;Dirty&quot;:
+        return &quot;Suck&quot;
+    elif location == &quot;A&quot;:
+        return &quot;Right&quot;
+    else:
+        return &quot;Left&quot;
+
+for percept in [(&quot;A&quot;, &quot;Dirty&quot;), (&quot;A&quot;, &quot;Clean&quot;), (&quot;B&quot;, &quot;Dirty&quot;), (&quot;B&quot;, &quot;Clean&quot;)]:
+    print(percept, &quot;-&gt;&quot;, reflex_vacuum(*percept))</pre><div class="label">Expected output</div><pre class="out">(&#x27;A&#x27;, &#x27;Dirty&#x27;) -&gt; Suck
+(&#x27;A&#x27;, &#x27;Clean&#x27;) -&gt; Right
+(&#x27;B&#x27;, &#x27;Dirty&#x27;) -&gt; Suck
+(&#x27;B&#x27;, &#x27;Clean&#x27;) -&gt; Left</pre><p class="explain"><code>*percept</code> unpacks the tuple into the two arguments. This agent is a pure condition → action table: a simple reflex agent.</p></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off"># Write your code here
+</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p1e6"><header><span class="num">1.6</span><span class="badge predict">Predict the output</span><h3>Run the vacuum world</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Both squares start Dirty and the agent starts in A. Trace 4 steps. What is printed?</div><div class="label">Code</div><pre class="code">world = {&quot;A&quot;: &quot;Dirty&quot;, &quot;B&quot;: &quot;Dirty&quot;}
+loc = &quot;A&quot;
+for step in range(4):
+    status = world[loc]
+    if status == &quot;Dirty&quot;:
+        action = &quot;Suck&quot;
+        world[loc] = &quot;Clean&quot;
+    elif loc == &quot;A&quot;:
+        action = &quot;Right&quot;
+        loc = &quot;B&quot;
+    else:
+        action = &quot;Left&quot;
+        loc = &quot;A&quot;
+    print(step, action, world)</pre><div class="guess" data-expected="0 Suck {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Dirty&#x27;}
+1 Right {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Dirty&#x27;}
+2 Suck {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Clean&#x27;}
+3 Left {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Clean&#x27;}"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Step 0: A is Dirty → Suck → A becomes Clean.</li><li><b>Step 2.</b> Step 1: A is Clean → Right → now in B.</li><li><b>Step 3.</b> Step 2: B is Dirty → Suck. Step 3: B is Clean → Left.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">0 Suck {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Dirty&#x27;}
+1 Right {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Dirty&#x27;}
+2 Suck {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Clean&#x27;}
+3 Left {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Clean&#x27;}</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off">world = {&quot;A&quot;: &quot;Dirty&quot;, &quot;B&quot;: &quot;Dirty&quot;}
+loc = &quot;A&quot;
+for step in range(4):
+    status = world[loc]
+    if status == &quot;Dirty&quot;:
+        action = &quot;Suck&quot;
+        world[loc] = &quot;Clean&quot;
+    elif loc == &quot;A&quot;:
+        action = &quot;Right&quot;
+        loc = &quot;B&quot;
+    else:
+        action = &quot;Left&quot;
+        loc = &quot;A&quot;
+    print(step, action, world)</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><div class="pager"><a href="index.html"><small>← Back</small>All parts</a><a class="next" href="cc511-w2-uninformed.html"><small>Next →</small>Part 2: Week 2 · Uninformed Search</a></div><footer>Based on CC511 Artificial Intelligence, Weeks 1–6 (Dr. Karma Fathalla).</footer></main>
 <script>
 const KW=new Set("def return if elif else for while in not and or break continue import from as None True False del pass is lambda with".split(" "));
 const FN=new Set("print len range type int float str list dict set tuple input open enumerate zip sorted bool repr min max sum".split(" "));
@@ -227,7 +253,7 @@ document.querySelectorAll(".hintbox").forEach(box=>{
   btn.addEventListener("click",()=>{if(shown<items.length){items[shown].classList.add("show");shown++;label();}});
 });
 // ---- solved checkboxes
-const PKEY="pyprac-solved-"+document.body.dataset.part;
+const PKEY="cc511-solved-"+document.body.dataset.part;
 const solved=new Set(store.get(PKEY)||[]);
 const cards=[...document.querySelectorAll(".ex")];
 function refresh(){

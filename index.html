@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Intro to Python · Practice workbook</title><style>
+<title>Workbook · CC511 AI practice</title><style>
 :root{
   --bg:#f5f6fa; --card:#ffffff; --ink:#1b1f2e; --muted:#5d6478; --line:#e3e6ef;
   --accent:#27378f; --accent-soft:#e9ecfa; --accent-ink:#ffffff;
@@ -59,6 +59,9 @@ h2.section{border-bottom:2px solid var(--accent);padding-bottom:6px;color:var(--
 .badge.write{background:var(--accent-soft);color:var(--accent)}
 .badge.predict{background:var(--warn-soft);color:var(--warn)}
 .badge.fix{background:var(--bad-soft);color:var(--bad)}
+.badge.think{background:var(--ok-soft);color:var(--ok)}
+.answer{margin:6px 0 0}.answer ul,.answer ol{margin:4px 0;padding-left:22px}
+table.t{border-collapse:collapse;margin:8px 0;font-size:14px;width:100%}table.t th,table.t td{border:1px solid var(--line);padding:6px 8px;text-align:left}table.t th{background:var(--accent-soft)}
 .done{font-size:14px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
 .done input{width:18px;height:18px;accent-color:var(--ok)}
 .task{margin:4px 0 10px}
@@ -122,6 +125,7 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
 .opt .k{font-weight:700;color:var(--muted);min-width:1.2em}
 .opt pre{font-size:14px;white-space:pre-wrap;word-break:break-word}
 .opt:disabled{cursor:default}
+.q.concept .opt pre{font-family:inherit;font-size:15px}
 .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
 .opt.picked.incorrect{border-color:var(--bad);background:var(--bad-soft)}
 .feedback{display:none;margin-top:12px;border-radius:8px;padding:10px 14px}
@@ -132,15 +136,37 @@ footer{color:var(--muted);font-size:13px;padding:0 0 40px}
 .chip.filter.on{background:var(--accent);color:var(--accent-ink)}
 .hidden{display:none!important}
 @media (max-width:520px){ .ex,.q{padding:14px} pre.code,pre.out{font-size:13px} }
+
+.fig{display:block;width:100%;height:auto;margin:6px auto 4px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.fig .e{stroke:var(--muted);stroke-width:1.6;fill:none}
+.fig .n{fill:var(--card);stroke:var(--ink);stroke-width:1.6}
+.fig .nmax{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8}
+.fig .nmin{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.8}
+.fig .hl{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.2}
+.fig .leaf{fill:var(--bg);stroke:var(--line);stroke-width:1.4}
+.fig text{fill:var(--ink);font-size:14px;text-anchor:middle;dominant-baseline:central}
+.fig .el{fill:var(--accent);font-size:12.5px;font-weight:600;paint-order:stroke;stroke:var(--card);stroke-width:4px}
+.fig .lv{fill:var(--muted);font-size:12px;text-anchor:start;font-weight:600;letter-spacing:.04em}
+.fig .hv{fill:var(--warn);font-size:12px;font-weight:600}
+.fig .sm{font-size:12px;fill:var(--muted)}
+.figwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 8px;margin:8px 0;overflow-x:auto}
+.wt{font-size:13px;margin:4px 0 2px}.wt th,.wt td{text-align:center;padding:4px 5px}
+.figcap{font-size:13px;color:var(--muted);margin:2px 4px 4px}
+
+.boards{display:flex;flex-wrap:wrap;gap:18px;margin:8px 0}
+table.board{border-collapse:collapse;font-variant-numeric:tabular-nums}
+table.board caption{font-size:13px;color:var(--muted);padding-bottom:4px;font-weight:600}
+table.board td{width:40px;height:40px;text-align:center;border:2px solid var(--accent);font-weight:700;font-size:18px;background:var(--card)}
+table.board td:empty{background:var(--accent-soft)}
+.board.ttt td{width:34px;height:34px;font-size:18px}
 </style></head>
-<body data-part="index"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">Intro to <span>Python</span> · Practice</a><div class="chips"><a class="chip" href="part1-interpreter.html" title="Part 1: Interactive Interpreter">1</a><a class="chip" href="part2-comments.html" title="Part 2: Comments">2</a><a class="chip" href="part3-variables.html" title="Part 3: Variables and Types">3</a><a class="chip" href="part4-numbers-booleans.html" title="Part 4: Numbers and Booleans">4</a><a class="chip" href="part5-strings.html" title="Part 5: Strings">5</a><a class="chip" href="part6-data-structures.html" title="Part 6: Data Structures">6</a><a class="chip" href="part7-io-control-flow.html" title="Part 7: Console I/O and Control Flow">7</a><a class="chip" href="part8-loops.html" title="Part 8: Loops">8</a><a class="chip" href="part9-functions.html" title="Part 9: Functions">9</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">Intro to Python · Lectures 1–2</p>
-<h1>Practice workbook</h1><p class="lead">83 hands-on exercises across the 9 parts of the lectures, plus a 63-question tracing quiz. Work through the parts in order, then test yourself with the quiz.</p></section>
-<div class="recap"><h2>How each exercise works</h2><ul>
-<li><b>Write code</b>: build the program yourself. <b>Predict the output</b>: work out what is printed before running it. <b>Fix the bug</b>: find what is wrong and correct it.</li>
-<li>Stuck? Press <b>💡 Show hint</b>. Each press reveals the next small step, so you only see as much help as you need.</li>
-<li><b>Show the full solution</b> reveals the answer code and its exact output (every output was produced by actually running the code).</li>
-<li><b>▶ Try it in the editor</b> runs real Python in your browser (internet needed the first time). You can also paste any code into Google Colab.</li>
-</ul></div><div class="grid"><a class="card" href="part1-interpreter.html"><span class="n">Part 1 · Lecture 1</span><h3>Interactive Interpreter</h3><p>5 exercises with step-by-step hints</p></a><a class="card" href="part2-comments.html"><span class="n">Part 2 · Lecture 1</span><h3>Comments</h3><p>5 exercises with step-by-step hints</p></a><a class="card" href="part3-variables.html"><span class="n">Part 3 · Lecture 1</span><h3>Variables and Types</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="part4-numbers-booleans.html"><span class="n">Part 4 · Lecture 1</span><h3>Numbers and Booleans</h3><p>7 exercises with step-by-step hints</p></a><a class="card" href="part5-strings.html"><span class="n">Part 5 · Lecture 1 + string slides of Lecture 2</span><h3>Strings</h3><p>11 exercises with step-by-step hints</p></a><a class="card" href="part6-data-structures.html"><span class="n">Part 6 · Lecture 2</span><h3>Data Structures</h3><p>20 exercises with step-by-step hints</p></a><a class="card" href="part7-io-control-flow.html"><span class="n">Part 7 · Lecture 2</span><h3>Console I/O and Control Flow</h3><p>10 exercises with step-by-step hints</p></a><a class="card" href="part8-loops.html"><span class="n">Part 8 · Lecture 2</span><h3>Loops</h3><p>11 exercises with step-by-step hints</p></a><a class="card" href="part9-functions.html"><span class="n">Part 9 · Lecture 2</span><h3>Functions</h3><p>8 exercises with step-by-step hints</p></a><a class="card quiz" href="quiz-trace-mcq.html"><span class="n">Final check · all parts</span><h3>Trace MCQ quiz</h3><p>63 “what does this print?” questions with hints and full traces</p></a></div>
+<body data-part="index"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">CC511 <span>AI</span> · Practice</a><div class="chips"><a class="chip" href="cc511-w1-agents.html" title="Part 1: Week 1 · AI &amp; Intelligent Agents">1</a><a class="chip" href="cc511-w2-uninformed.html" title="Part 2: Week 2 · Uninformed Search">2</a><a class="chip" href="cc511-w3-informed.html" title="Part 3: Week 3 · Informed (Heuristic) Search">3</a><a class="chip" href="cc511-w4-games.html" title="Part 4: Week 4 · Games &amp; Adversarial Search">4</a><a class="chip" href="cc511-w5-6-neural-networks.html" title="Part 5: Weeks 5–6 · Neural Networks &amp; Backpropagation">5</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">CC511 Artificial Intelligence · Weeks 1–6</p>
+<h1>Quiz &amp; practice workbook</h1><p class="lead">A 199-question MCQ bank covering every lecture, plus hand-trace and coding practice for each week.</p></section>
+<a class="card quiz" href="quiz-trace-mcq.html" style="padding:20px"><span class="n">Main section</span><h3 style="font-size:24px">MCQ quiz: 199 questions</h3>
+<p>Practice or exam mode · filter by week and question type · random 20-question tests · review your mistakes · step-by-step explanations</p>
+<p id="idx-prog" style="margin-top:8px;font-weight:600"></p></a>
+<div class="ctl" style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0"><span class="note" style="width:100%">Jump straight to one week's questions:</span><a class="chip" href="quiz-trace-mcq.html#W1">Week 1: AI &amp; agents <small style="opacity:.7">&nbsp;35</small></a><a class="chip" href="quiz-trace-mcq.html#W2">Week 2: Uninformed search <small style="opacity:.7">&nbsp;41</small></a><a class="chip" href="quiz-trace-mcq.html#W3">Week 3: Informed search <small style="opacity:.7">&nbsp;30</small></a><a class="chip" href="quiz-trace-mcq.html#W4">Week 4: Games <small style="opacity:.7">&nbsp;38</small></a><a class="chip" href="quiz-trace-mcq.html#W5-6">Weeks 5–6: Neural networks <small style="opacity:.7">&nbsp;55</small></a></div>
+<h2>Practice by week</h2><div class="grid"><a class="card" href="cc511-w1-agents.html"><span class="n">Practice part 1 · CC511 Week 1</span><h3>Week 1 · AI &amp; Intelligent Agents</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="cc511-w2-uninformed.html"><span class="n">Practice part 2 · CC511 Week 2</span><h3>Week 2 · Uninformed Search</h3><p>7 exercises with step-by-step hints</p></a><a class="card" href="cc511-w3-informed.html"><span class="n">Practice part 3 · CC511 Week 3</span><h3>Week 3 · Informed (Heuristic) Search</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="cc511-w4-games.html"><span class="n">Practice part 4 · CC511 Week 4</span><h3>Week 4 · Games &amp; Adversarial Search</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="cc511-w5-6-neural-networks.html"><span class="n">Practice part 5 · CC511 Weeks 5–6</span><h3>Weeks 5–6 · Neural Networks &amp; Backpropagation</h3><p>6 exercises with step-by-step hints</p></a></div>
 <footer>Keep all these files in the same folder so the links between pages work.</footer></main>
 <script>
 const KW=new Set("def return if elif else for while in not and or break continue import from as None True False del pass is lambda with".split(" "));
@@ -164,4 +190,7 @@ function highlight(src){
 }
 document.querySelectorAll("pre.code").forEach(p=>{p.innerHTML=highlight(p.textContent);});
 const store={get(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+try{const s=JSON.parse(localStorage.getItem("cc511-quiz-v1")||"{}");const n=Object.keys(s).length;
+if(n)document.getElementById("idx-prog").textContent="You have answered "+n+" of 199 questions so far.";}catch(e){}
 </script></body></html>

@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Part 1 · Ch 1 · Computer System Overview · OS practice</title><style>
+:root{
+  --bg:#f5f6fa; --card:#ffffff; --ink:#1b1f2e; --muted:#5d6478; --line:#e3e6ef;
+  --accent:#27378f; --accent-soft:#e9ecfa; --accent-ink:#ffffff;
+  --code-bg:#14182b; --code-ink:#e6e8f2; --code-line:#262b45;
+  --ok:#1a7f4b; --ok-soft:#e5f5ec; --bad:#b4232c; --bad-soft:#fbe9ea; --warn:#8a5a00; --warn-soft:#fff4dc;
+  --hint:#7a4b00; --hint-soft:#fff7e6;
+  --t-kw:#c792ea; --t-str:#addb67; --t-num:#f78c6c; --t-com:#7f89a8; --t-fn:#82aaff; --t-prompt:#ffcb6b;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f111a; --card:#171a26; --ink:#e7e9f3; --muted:#9aa1b8; --line:#2a2f42;
+    --accent:#8fa2ff; --accent-soft:#1f2540; --accent-ink:#0f111a;
+    --code-bg:#0b0d16; --code-ink:#e6e8f2; --code-line:#232842;
+    --ok:#5fd394; --ok-soft:#14291f; --bad:#ff7b84; --bad-soft:#2d1619; --warn:#ffcf70; --warn-soft:#2a2210;
+    --hint:#ffd27a; --hint-soft:#262012;
+    color-scheme: dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--accent)}
+code,kbd,pre,textarea{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+code{font-size:.9em;background:var(--accent-soft);padding:.1em .35em;border-radius:4px}
+kbd{font-size:.85em;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 .3em;background:var(--card)}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+.topbar{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:12px;min-height:54px;overflow-x:auto}
+.brand{font-weight:700;text-decoration:none;color:var(--ink);white-space:nowrap}
+.brand span{color:var(--accent)}
+.chips{display:flex;gap:6px;margin-left:auto}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 10px;border-radius:16px;border:1px solid var(--line);text-decoration:none;color:var(--ink);font-size:14px;white-space:nowrap}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.hero{padding:32px 0 8px}
+.eyebrow{color:var(--muted);font-size:14px;letter-spacing:.04em;text-transform:uppercase;margin:0 0 4px}
+h1{font-size:clamp(26px,5vw,36px);line-height:1.2;margin:0 0 8px}
+h2{font-size:22px;margin:32px 0 12px}
+h2.section{border-bottom:2px solid var(--accent);padding-bottom:6px;color:var(--accent)}
+.lead{color:var(--muted);margin:0 0 16px}
+.recap{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px 14px 18px;margin:16px 0}
+.recap h2{font-size:17px;margin:0 0 6px}
+.recap ul{margin:0;padding-left:20px}
+.recap li{margin:4px 0}
+.howto{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;color:var(--muted);margin:12px 0 4px}
+.progress{display:flex;align-items:center;gap:10px;margin:18px 0 6px;font-size:14px;color:var(--muted)}
+.bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.ex{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;scroll-margin-top:70px}
+.ex.solved{border-color:var(--ok)}
+.ex header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:8px}
+.ex h3{margin:0;font-size:18px;flex:1 1 220px}
+.num{font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.badge{font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.badge.write{background:var(--accent-soft);color:var(--accent)}
+.badge.predict{background:var(--warn-soft);color:var(--warn)}
+.badge.fix{background:var(--bad-soft);color:var(--bad)}
+.badge.think{background:var(--ok-soft);color:var(--ok)}
+.answer{margin:6px 0 0}.answer ul,.answer ol{margin:4px 0;padding-left:22px}
+table.t{border-collapse:collapse;margin:8px 0;font-size:14px;width:100%}table.t th,table.t td{border:1px solid var(--line);padding:6px 8px;text-align:left}table.t th{background:var(--accent-soft)}
+.done{font-size:14px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+.done input{width:18px;height:18px;accent-color:var(--ok)}
+.task{margin:4px 0 10px}
+.label{font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 4px;text-transform:uppercase;letter-spacing:.04em}
+pre{margin:0}
+pre.code,pre.out{background:var(--code-bg);color:var(--code-ink);padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.55;tab-size:4}
+pre.out{background:var(--accent-soft);color:var(--ink);border:1px dashed var(--line)}
+pre.out .err{color:var(--bad);font-weight:600}
+.t-kw{color:var(--t-kw)}.t-str{color:var(--t-str)}.t-num{color:var(--t-num)}.t-com{color:var(--t-com);font-style:italic}.t-fn{color:var(--t-fn)}.t-prompt{color:var(--t-prompt)}
+button{font:inherit;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:7px 14px;font-size:14px;min-height:36px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:default}
+.hintbox{margin-top:12px}
+.hints{margin:0 0 8px;padding:0;list-style:none}
+.hints li{display:none;background:var(--hint-soft);border-left:3px solid var(--hint);padding:8px 12px;border-radius:0 8px 8px 0;margin:6px 0}
+.hints li.show{display:block;animation:fade .25s}
+.hints li b{color:var(--hint)}
+@keyframes fade{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+details{margin-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--accent);padding:4px 0;list-style-position:outside}
+details.solution[open]{background:var(--bg);border-radius:8px;padding:4px 12px 12px}
+.explain{margin:10px 0 0;font-size:15px}
+.guess{margin-top:10px}
+.guess textarea,.editor textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.55;background:var(--card);color:var(--ink);resize:vertical;tab-size:4}
+.guess textarea{min-height:70px}
+.editor textarea{min-height:140px;background:var(--code-bg);color:var(--code-ink);border-color:var(--code-line)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.verdict{font-size:14px;font-weight:600}
+.verdict.ok{color:var(--ok)}.verdict.bad{color:var(--bad)}
+.status,.note{font-size:13px;color:var(--muted)}
+.runout{margin-top:8px;display:none}
+.pager{display:flex;justify-content:space-between;gap:12px;margin:32px 0 48px}
+.pager a{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;text-decoration:none;color:var(--ink)}
+.pager a:hover{border-color:var(--accent)}
+.pager small{display:block;color:var(--muted)}
+.pager .next{text-align:right}
+footer{color:var(--muted);font-size:13px;padding:0 0 40px}
+/* index */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:16px 0}
+.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-decoration:none;color:var(--ink)}
+.card:hover{border-color:var(--accent)}
+.card .n{font-size:13px;color:var(--muted)}
+.card h3{margin:2px 0 6px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.card.quiz{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.card.quiz p,.card.quiz .n{color:var(--accent-ink);opacity:.85}
+/* quiz */
+.qtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.score{position:sticky;top:54px;z-index:4;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:15px}
+.score b{font-variant-numeric:tabular-nums}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;scroll-margin-top:120px}
+.q.right{border-color:var(--ok)}.q.wrong{border-color:var(--bad)}
+.q .qhead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:8px}
+.q .topic{font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--accent-soft);color:var(--accent)}
+.q .ask{margin:10px 0 8px;font-weight:600}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:10px 12px;min-height:44px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .k{font-weight:700;color:var(--muted);min-width:1.2em}
+.opt pre{font-size:14px;white-space:pre-wrap;word-break:break-word}
+.opt:disabled{cursor:default}
+.q.concept .opt pre{font-family:inherit;font-size:15px}
+.opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.opt.picked.incorrect{border-color:var(--bad);background:var(--bad-soft)}
+.feedback{display:none;margin-top:12px;border-radius:8px;padding:10px 14px}
+.feedback.ok{display:block;background:var(--ok-soft)}
+.feedback.bad{display:block;background:var(--bad-soft)}
+.feedback ol{margin:6px 0 0;padding-left:20px}
+.chip.filter{cursor:pointer;background:var(--card)}
+.chip.filter.on{background:var(--accent);color:var(--accent-ink)}
+.hidden{display:none!important}
+@media (max-width:520px){ .ex,.q{padding:14px} pre.code,pre.out{font-size:13px} }
+
+.fig{display:block;width:100%;height:auto;margin:6px auto 4px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.fig .e{stroke:var(--muted);stroke-width:1.6;fill:none}
+.fig .n{fill:var(--card);stroke:var(--ink);stroke-width:1.6}
+.fig .nmax{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8}
+.fig .nmin{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.8}
+.fig .hl{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.2}
+.fig .leaf{fill:var(--bg);stroke:var(--line);stroke-width:1.4}
+.fig text{fill:var(--ink);font-size:14px;text-anchor:middle;dominant-baseline:central}
+.fig .el{fill:var(--accent);font-size:12.5px;font-weight:600;paint-order:stroke;stroke:var(--card);stroke-width:4px}
+.fig .lv{fill:var(--muted);font-size:12px;text-anchor:start;font-weight:600;letter-spacing:.04em}
+.fig .hv{fill:var(--warn);font-size:12px;font-weight:600}
+.fig .sm{font-size:12px;fill:var(--muted)}
+.figwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 8px;margin:8px 0;overflow-x:auto}
+.wt{font-size:13px;margin:4px 0 2px}.wt th,.wt td{text-align:center;padding:4px 5px}
+.figcap{font-size:13px;color:var(--muted);margin:2px 4px 4px}
+
+.boards{display:flex;flex-wrap:wrap;gap:18px;margin:8px 0}
+table.board{border-collapse:collapse;font-variant-numeric:tabular-nums}
+table.board caption{font-size:13px;color:var(--muted);padding-bottom:4px;font-weight:600}
+table.board td{width:40px;height:40px;text-align:center;border:2px solid var(--accent);font-weight:700;font-size:18px;background:var(--card)}
+table.board td:empty{background:var(--accent-soft)}
+
+.fig .st{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8}
+.fig .st.hi{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.4}
+.fig .ar{stroke:var(--ink);stroke-width:1.6;fill:none}
+.fig .ar.dash{stroke-dasharray:6 5}
+.fig .al{fill:var(--accent);font-size:12px;font-weight:600;paint-order:stroke;stroke:var(--card);stroke-width:4px}
+.fig .sn{font-size:13px;font-weight:700}
+.fig #ah path{fill:var(--ink)}
+.trace td,.trace th{padding:2px 6px;font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.board.ttt td{width:34px;height:34px;font-size:18px}
+</style></head>
+<body data-part="1"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">Operating <span>Systems</span> · Practice</a><div class="chips"><a class="chip on" href="os-ch1-computer-system.html" title="Part 1: Ch 1 · Computer System Overview">1</a><a class="chip" href="os-ch2-os-overview.html" title="Part 2: Ch 2 · Operating System Overview">2</a><a class="chip" href="os-ch3-processes.html" title="Part 3: Ch 3 · Process Description and Control">3</a><a class="chip" href="os-ch4-threads.html" title="Part 4: Ch 4 · Threads">4</a><a class="chip" href="os-sec3-fork.html" title="Part 5: Lab Section 3 · fork()">5</a><a class="chip" href="os-sec4-exec.html" title="Part 6: Lab Section 4 · exec()">6</a><a class="chip" href="os-sec5-pipe.html" title="Part 7: Lab Section 5 · pipe()">7</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">Part 1 of 7 · OS Chapter 1</p>
+<h1>Ch 1 · Computer System Overview</h1>
+<p class="lead">Try each exercise yourself first. If you get stuck, open the hints one at a time, and only then look at the solution.</p></section><div class="recap"><h2>Quick recap from the lecture</h2><ul><li>Basic elements: <b>processor, main memory, I/O modules, system bus</b>. Instruction cycle = <b>fetch</b> (PC → instruction, PC + 1) then <b>execute</b>.</li><li>Interrupts improve processor utilization. Classes: <b>program, timer, I/O, hardware failure</b>. With interrupts, an interrupt stage follows execute (if interrupts are enabled).</li><li>Interrupt processing: finish the current instruction → acknowledge → push PSW and PC → load handler PC → save state → handle → restore state → restore PSW and PC.</li><li>I/O techniques: <b>programmed</b> (processor polls) → <b>interrupt-driven</b> (processor still moves the data) → <b>DMA</b> (whole block; processor only at start and end).</li><li>Memory hierarchy: going down, cost/bit ↓, capacity ↑, access time ↑, access frequency ↓. Two-level: <b>Ts = H·T1 + (1−H)(T1+T2)</b>. Locality makes it work.</li><li>SMP: similar processors sharing memory and I/O under one OS. <b>Amdahl</b>: S(n) = n / (1 + (n−1)f), max 1/f.</li></ul></div><div class="howto"><span>💡 Hints open one step at a time</span><span>▶ Run code in the editor (needs internet the first time) or in Google Colab</span><span>✔ Tick “Solved” to track progress</span></div><div class="progress"><span id="prog-text"></span><div class="bar"><i id="prog-bar"></i></div></div><article class="ex" id="p1e1"><header><span class="num">1.1</span><span class="badge predict">Predict the output</span><h3>Trace the fetch–execute cycle</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">This tiny machine has an accumulator (AC) and runs the program at address 300. What does it print?</div><div class="label">Code</div><pre class="code">memory = {300: (&quot;LOAD&quot;, 940), 301: (&quot;ADD&quot;, 941), 302: (&quot;STORE&quot;, 941), 303: (&quot;HALT&quot;, None),
+          940: 3, 941: 2}
+PC, AC = 300, 0
+while True:
+    IR = memory[PC]          # fetch
+    PC = PC + 1              # PC is incremented after each fetch
+    op, addr = IR            # execute
+    if op == &quot;LOAD&quot;:
+        AC = memory[addr]
+    elif op == &quot;ADD&quot;:
+        AC = AC + memory[addr]
+    elif op == &quot;STORE&quot;:
+        memory[addr] = AC
+    elif op == &quot;HALT&quot;:
+        break
+    print(&quot;PC =&quot;, PC, &quot;IR =&quot;, op, addr, &quot;AC =&quot;, AC)
+print(&quot;memory[941] =&quot;, memory[941])</pre><div class="guess" data-expected="PC = 301 IR = LOAD 940 AC = 3
+PC = 302 IR = ADD 941 AC = 5
+PC = 303 IR = STORE 941 AC = 5
+memory[941] = 5"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> The PC moves to the next address right after the fetch, before the instruction runs.</li><li><b>Step 2.</b> LOAD 940 → AC = 3. ADD 941 → AC = 3 + 2.</li><li><b>Step 3.</b> STORE 941 writes AC back into 941. HALT stops before printing.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">PC = 301 IR = LOAD 940 AC = 3
+PC = 302 IR = ADD 941 AC = 5
+PC = 303 IR = STORE 941 AC = 5
+memory[941] = 5</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off">memory = {300: (&quot;LOAD&quot;, 940), 301: (&quot;ADD&quot;, 941), 302: (&quot;STORE&quot;, 941), 303: (&quot;HALT&quot;, None),
+          940: 3, 941: 2}
+PC, AC = 300, 0
+while True:
+    IR = memory[PC]          # fetch
+    PC = PC + 1              # PC is incremented after each fetch
+    op, addr = IR            # execute
+    if op == &quot;LOAD&quot;:
+        AC = memory[addr]
+    elif op == &quot;ADD&quot;:
+        AC = AC + memory[addr]
+    elif op == &quot;STORE&quot;:
+        memory[addr] = AC
+    elif op == &quot;HALT&quot;:
+        break
+    print(&quot;PC =&quot;, PC, &quot;IR =&quot;, op, addr, &quot;AC =&quot;, AC)
+print(&quot;memory[941] =&quot;, memory[941])</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p1e2"><header><span class="num">1.2</span><span class="badge think">Think & answer</span><h3>Order the interrupt-processing steps</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Put these in order: (a) processor pushes PSW and PC onto the control stack, (b) restore old PSW and PC, (c) device issues an interrupt, (d) processor finishes the current instruction, (e) save remainder of process state, (f) process interrupt, (g) processor loads new PC based on the interrupt, (h) processor signals acknowledgment, (i) restore process state information.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Hardware steps come first (5 of them), then software (4).</li><li><b>Step 2.</b> The current instruction is always finished before anything else happens.</li><li><b>Step 3.</b> The software side mirrors itself: save … process … restore … restore.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><p><b>c → d → h → a → g</b> (hardware) then <b>e → f → i → b</b> (software).</p></div></details></article><article class="ex" id="p1e3"><header><span class="num">1.3</span><span class="badge think">Think & answer</span><h3>Compare the three I/O techniques</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Fill in a table: for programmed I/O, interrupt-driven I/O and DMA, who moves the data, when the processor is involved, and how efficient it is.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Programmed: the processor polls the status register.</li><li><b>Step 2.</b> Interrupt-driven: the processor is interrupted when the device is ready, but still copies the data.</li><li><b>Step 3.</b> DMA: a separate module moves a whole block.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><table class="t"><tr><th></th><th>Moves the data</th><th>Processor involvement</th><th>Efficiency</th></tr>
+          <tr><td>Programmed I/O</td><td>Processor</td><td>Busy checking status the whole time</td><td>Lowest: severely degrades performance</td></tr>
+          <tr><td>Interrupt-driven</td><td>Processor</td><td>Does other work; interrupted per transfer</td><td>Better, but still processor-intensive</td></tr>
+          <tr><td>DMA</td><td>DMA module</td><td>Only at the start and end of the block</td><td>Highest</td></tr></table></div></details></article><article class="ex" id="p1e4"><header><span class="num">1.4</span><span class="badge write">Write code</span><h3>Two-level memory calculator</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write <code>access_time(H, T1, T2)</code> using Ts = H·T1 + (1 − H)(T1 + T2). Print Ts for H = 0.5, 0.8, 0.9, 0.95, 0.99 and 1.0 with T1 = 0.1 µs and T2 = 1 µs.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> A miss costs T1 + T2 because M1 is checked first.</li><li><b>Step 2.</b> Loop: <code>for H in [0.5, 0.8, 0.9, 0.95, 0.99, 1.0]:</code>.</li><li><b>Step 3.</b> Format with <code>"%.3f"</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">def access_time(H, T1, T2):
+    return H * T1 + (1 - H) * (T1 + T2)
+
+for H in [0.5, 0.8, 0.9, 0.95, 0.99, 1.0]:
+    print(&quot;H = %.2f  Ts = %.3f us&quot; % (H, access_time(H, 0.1, 1.0)))</pre><div class="label">Expected output</div><pre class="out">H = 0.50  Ts = 0.600 us
+H = 0.80  Ts = 0.300 us
+H = 0.90  Ts = 0.200 us
+H = 0.95  Ts = 0.150 us
+H = 0.99  Ts = 0.110 us
+H = 1.00  Ts = 0.100 us</pre><p class="explain">As H → 1, Ts → T1. That's why a small cache with a high hit ratio makes memory look almost as fast as the cache.</p></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off"># Write your code here
+</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p1e5"><header><span class="num">1.5</span><span class="badge write">Write code</span><h3>Amdahl&#x27;s law table</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write <code>speedup(n, f)</code> = n / (1 + (n − 1)f). Print the speedup for n = 1, 2, 4, 8, 16 with f = 0.05 and f = 0.1, and the limit 1/f for each.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Use two nested loops, or one loop per f.</li><li><b>Step 2.</b> The limit as n → ∞ is <code>1 / f</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">def speedup(n, f):
+    return n / (1 + (n - 1) * f)
+
+for f in [0.05, 0.1]:
+    row = [&quot;%.2f&quot; % speedup(n, f) for n in [1, 2, 4, 8, 16]]
+    print(&quot;f =&quot;, f, row, &quot;max =&quot;, round(1 / f, 1))</pre><div class="label">Expected output</div><pre class="out">f = 0.05 [&#x27;1.00&#x27;, &#x27;1.90&#x27;, &#x27;3.48&#x27;, &#x27;5.93&#x27;, &#x27;9.14&#x27;] max = 20.0
+f = 0.1 [&#x27;1.00&#x27;, &#x27;1.82&#x27;, &#x27;3.08&#x27;, &#x27;4.71&#x27;, &#x27;6.40&#x27;] max = 10.0</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off"># Write your code here
+</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p1e6"><header><span class="num">1.6</span><span class="badge think">Think & answer</span><h3>Classify the interrupts</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Name the interrupt class: (a) arithmetic overflow, (b) the OS's regular time-keeping tick, (c) printer finished printing, (d) power failure, (e) reference outside the user's allowed memory.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Four classes: program, timer, I/O, hardware failure.</li><li><b>Step 2.</b> Anything caused by executing an instruction is a program interrupt.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer">(a) Program · (b) Timer · (c) I/O · (d) Hardware failure · (e) Program.</div></details></article><div class="pager"><a href="index.html"><small>← Back</small>All parts</a><a class="next" href="os-ch2-os-overview.html"><small>Next →</small>Part 2: Ch 2 · Operating System Overview</a></div><footer>Based on Stallings, Operating Systems: Internals and Design Principles (8th ed.), Chapters 1–4, plus lab sections 3–5 (fork, exec, pipe).</footer></main>
+<script>
+const KW=new Set("def return if elif else for while in not and or break continue import from as None True False del pass is lambda with int char void const unsigned long short struct sizeof NULL pid_t ssize_t size_t switch case default do".split(" "));
+const FN=new Set("print len range type int float str list dict set tuple input open enumerate zip sorted bool repr min max sum printf perror fork getpid getppid wait waitpid exit execl execv execlp execvp pipe read write close sleep strlen atoi memset main".split(" "));
+function escH(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function highlight(src){
+  const re=/(#(?!include)[^\n]*|\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("{3}[\s\S]*?"{3}|'{3}[\s\S]*?'{3}|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^>>>|^\.\.\.)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b/gm;
+  let out="",last=0,m;
+  while((m=re.exec(src))){
+    out+=escH(src.slice(last,m.index));last=re.lastIndex;
+    const t=escH(m[0]);
+    if(m[1])out+='<span class="t-com">'+t+'</span>';
+    else if(m[2])out+='<span class="t-str">'+t+'</span>';
+    else if(m[3])out+='<span class="t-prompt">'+t+'</span>';
+    else if(m[4])out+='<span class="t-num">'+t+'</span>';
+    else if(KW.has(m[5]))out+='<span class="t-kw">'+t+'</span>';
+    else if(FN.has(m[5]))out+='<span class="t-fn">'+t+'</span>';
+    else out+=t;
+  }
+  return out+escH(src.slice(last));
+}
+document.querySelectorAll("pre.code").forEach(p=>{p.innerHTML=highlight(p.textContent);});
+const store={get(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+// ---- progressive hints
+document.querySelectorAll(".hintbox").forEach(box=>{
+  const items=[...box.querySelectorAll(".hints li")];
+  const btn=box.querySelector(".hint-btn");
+  if(!items.length){btn.remove();return;}
+  let shown=0;
+  const label=()=>{btn.textContent=shown<items.length?("💡 Show hint "+(shown+1)+" of "+items.length):"All hints shown";btn.disabled=shown>=items.length;};
+  label();
+  btn.addEventListener("click",()=>{if(shown<items.length){items[shown].classList.add("show");shown++;label();}});
+});
+// ---- solved checkboxes
+const PKEY="os8e-solved-"+document.body.dataset.part;
+const solved=new Set(store.get(PKEY)||[]);
+const cards=[...document.querySelectorAll(".ex")];
+function refresh(){
+  const n=cards.filter(c=>solved.has(c.id)).length;
+  document.getElementById("prog-text").textContent=n+" of "+cards.length+" marked solved";
+  document.getElementById("prog-bar").style.width=(100*n/cards.length)+"%";
+}
+cards.forEach(c=>{
+  const cb=c.querySelector(".done input");
+  cb.checked=solved.has(c.id);c.classList.toggle("solved",cb.checked);
+  cb.addEventListener("change",()=>{cb.checked?solved.add(c.id):solved.delete(c.id);c.classList.toggle("solved",cb.checked);store.set(PKEY,[...solved]);refresh();});
+});
+refresh();
+// ---- predict-the-output checker
+const norm=s=>s.replace(/\r/g,"").split("\n").map(l=>l.trim().replace(/\s+/g," ")).filter(l=>l).join("\n");
+document.querySelectorAll(".guess").forEach(box=>{
+  const ta=box.querySelector("textarea"),v=box.querySelector(".verdict"),exp=box.dataset.expected;
+  box.querySelector("button").addEventListener("click",()=>{
+    if(!ta.value.trim()){v.className="verdict";v.textContent="Type your prediction first.";return;}
+    const ok=norm(ta.value)===norm(exp);
+    v.className="verdict "+(ok?"ok":"bad");
+    v.textContent=ok?"✔ Exactly right!":"✘ Not quite. Compare line by line, use a hint, or open the solution.";
+  });
+});
+// ---- in-browser Python (Pyodide, loaded only when first used)
+let pyPromise=null;
+function loadPy(){
+  if(!pyPromise){
+    pyPromise=new Promise((res,rej)=>{
+      const s=document.createElement("script");
+      s.src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js";
+      s.onload=()=>loadPyodide().then(res,rej);
+      s.onerror=()=>rej(new Error("Could not download Python. You need an internet connection for the Run button. You can also paste the code into Google Colab."));
+      document.head.appendChild(s);
+    });
+    pyPromise.catch(()=>{pyPromise=null;});
+  }
+  return pyPromise;
+}
+function runPython(py,code,files){
+  let out="";const dec=new TextDecoder();
+  const w=buf=>{out+=dec.decode(buf,{stream:true});return buf.length;};
+  py.setStdout({write:w});py.setStderr({write:buf=>buf.length});
+  py.setStdin({stdin:()=>{
+    const last=out.split("\n").pop();
+    const v=window.prompt(last||"input() is waiting for a value:");
+    const val=v===null?"":v;out+=val+"\n";return val+"\n";
+  }});
+  for(const [n,c] of Object.entries(files||{})) py.FS.writeFile(n,c);
+  const ns=py.globals.get("dict")();
+  let err=null;
+  try{py.runPython(code,{globals:ns});}
+  catch(e){const lines=String(e.message||e).trim().split("\n");err=lines[lines.length-1];}
+  finally{try{py.runPython("import sys\nsys.stdout.flush()");}catch(e){} ns.destroy();}
+  return {out,err};
+}
+document.querySelectorAll(".editor").forEach(ed=>{
+  const ta=ed.querySelector("textarea"),start=ta.value,outEl=ed.querySelector(".runout"),st=ed.querySelector(".status");
+  const files=JSON.parse(ed.dataset.files||"{}");
+  ta.addEventListener("keydown",e=>{
+    if(e.key==="Tab"){e.preventDefault();const a=ta.selectionStart,b=ta.selectionEnd;ta.value=ta.value.slice(0,a)+"    "+ta.value.slice(b);ta.selectionStart=ta.selectionEnd=a+4;}
+    if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();ed.querySelector(".run").click();}
+  });
+  ed.querySelector(".reset").addEventListener("click",()=>{ta.value=start;outEl.style.display="none";st.textContent="";});
+  ed.querySelector(".run").addEventListener("click",async()=>{
+    const btn=ed.querySelector(".run");btn.disabled=true;
+    st.textContent=pyPromise?"Running…":"Loading Python in your browser (first time only, a few seconds)…";
+    try{
+      const py=await loadPy();st.textContent="Running…";
+      await new Promise(r=>setTimeout(r,20));
+      const {out,err}=runPython(py,ta.value,files);
+      outEl.innerHTML=escH(out)+(err?'<span class="err">'+escH((out&&!out.endsWith("\n")?"\n":"")+err)+'</span>':"");
+      if(!out&&!err)outEl.innerHTML='<span style="opacity:.6">(no output)</span>';
+      outEl.style.display="block";st.textContent=err?"Finished with an error.":"Done.";
+    }catch(e){st.textContent=e.message;}
+    btn.disabled=false;
+  });
+});
+</script></body></html>

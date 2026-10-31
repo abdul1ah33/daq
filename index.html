@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Workbook · CC511 AI practice</title><style>
+<title>Workbook · OS practice</title><style>
 :root{
   --bg:#f5f6fa; --card:#ffffff; --ink:#1b1f2e; --muted:#5d6478; --line:#e3e6ef;
   --accent:#27378f; --accent-soft:#e9ecfa; --accent-ink:#ffffff;
@@ -158,22 +158,31 @@ table.board{border-collapse:collapse;font-variant-numeric:tabular-nums}
 table.board caption{font-size:13px;color:var(--muted);padding-bottom:4px;font-weight:600}
 table.board td{width:40px;height:40px;text-align:center;border:2px solid var(--accent);font-weight:700;font-size:18px;background:var(--card)}
 table.board td:empty{background:var(--accent-soft)}
+
+.fig .st{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8}
+.fig .st.hi{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.4}
+.fig .ar{stroke:var(--ink);stroke-width:1.6;fill:none}
+.fig .ar.dash{stroke-dasharray:6 5}
+.fig .al{fill:var(--accent);font-size:12px;font-weight:600;paint-order:stroke;stroke:var(--card);stroke-width:4px}
+.fig .sn{font-size:13px;font-weight:700}
+.fig #ah path{fill:var(--ink)}
+.trace td,.trace th{padding:2px 6px;font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
 .board.ttt td{width:34px;height:34px;font-size:18px}
 </style></head>
-<body data-part="index"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">CC511 <span>AI</span> · Practice</a><div class="chips"><a class="chip" href="cc511-w1-agents.html" title="Part 1: Week 1 · AI &amp; Intelligent Agents">1</a><a class="chip" href="cc511-w2-uninformed.html" title="Part 2: Week 2 · Uninformed Search">2</a><a class="chip" href="cc511-w3-informed.html" title="Part 3: Week 3 · Informed (Heuristic) Search">3</a><a class="chip" href="cc511-w4-games.html" title="Part 4: Week 4 · Games &amp; Adversarial Search">4</a><a class="chip" href="cc511-w5-6-neural-networks.html" title="Part 5: Weeks 5–6 · Neural Networks &amp; Backpropagation">5</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">CC511 Artificial Intelligence · Weeks 1–6</p>
-<h1>Quiz &amp; practice workbook</h1><p class="lead">A 199-question MCQ bank covering every lecture, plus hand-trace and coding practice for each week.</p></section>
-<a class="card quiz" href="quiz-trace-mcq.html" style="padding:20px"><span class="n">Main section</span><h3 style="font-size:24px">MCQ quiz: 199 questions</h3>
-<p>Practice or exam mode · filter by week and question type · random 20-question tests · review your mistakes · step-by-step explanations</p>
+<body data-part="index"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">Operating <span>Systems</span> · Practice</a><div class="chips"><a class="chip" href="os-ch1-computer-system.html" title="Part 1: Ch 1 · Computer System Overview">1</a><a class="chip" href="os-ch2-os-overview.html" title="Part 2: Ch 2 · Operating System Overview">2</a><a class="chip" href="os-ch3-processes.html" title="Part 3: Ch 3 · Process Description and Control">3</a><a class="chip" href="os-ch4-threads.html" title="Part 4: Ch 4 · Threads">4</a><a class="chip" href="os-sec3-fork.html" title="Part 5: Lab Section 3 · fork()">5</a><a class="chip" href="os-sec4-exec.html" title="Part 6: Lab Section 4 · exec()">6</a><a class="chip" href="os-sec5-pipe.html" title="Part 7: Lab Section 5 · pipe()">7</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">Operating Systems · Chapters 1–4 + Lab sections 3–5</p>
+<h1>Quiz &amp; practice workbook</h1><p class="lead">A 294-question MCQ bank covering every chapter and lab section, plus worked exercises and small simulations for each one.</p></section>
+<a class="card quiz" href="quiz-trace-mcq.html" style="padding:20px"><span class="n">Main section</span><h3 style="font-size:24px">MCQ quiz: 294 questions</h3>
+<p>Practice or exam mode · filter by chapter and question type · random 20-question tests · review your mistakes · step-by-step explanations</p>
 <p id="idx-prog" style="margin-top:8px;font-weight:600"></p></a>
-<div class="ctl" style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0"><span class="note" style="width:100%">Jump straight to one week's questions:</span><a class="chip" href="quiz-trace-mcq.html#W1">Week 1: AI &amp; agents <small style="opacity:.7">&nbsp;35</small></a><a class="chip" href="quiz-trace-mcq.html#W2">Week 2: Uninformed search <small style="opacity:.7">&nbsp;41</small></a><a class="chip" href="quiz-trace-mcq.html#W3">Week 3: Informed search <small style="opacity:.7">&nbsp;30</small></a><a class="chip" href="quiz-trace-mcq.html#W4">Week 4: Games <small style="opacity:.7">&nbsp;38</small></a><a class="chip" href="quiz-trace-mcq.html#W5-6">Weeks 5–6: Neural networks <small style="opacity:.7">&nbsp;55</small></a></div>
-<h2>Practice by week</h2><div class="grid"><a class="card" href="cc511-w1-agents.html"><span class="n">Practice part 1 · CC511 Week 1</span><h3>Week 1 · AI &amp; Intelligent Agents</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="cc511-w2-uninformed.html"><span class="n">Practice part 2 · CC511 Week 2</span><h3>Week 2 · Uninformed Search</h3><p>7 exercises with step-by-step hints</p></a><a class="card" href="cc511-w3-informed.html"><span class="n">Practice part 3 · CC511 Week 3</span><h3>Week 3 · Informed (Heuristic) Search</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="cc511-w4-games.html"><span class="n">Practice part 4 · CC511 Week 4</span><h3>Week 4 · Games &amp; Adversarial Search</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="cc511-w5-6-neural-networks.html"><span class="n">Practice part 5 · CC511 Weeks 5–6</span><h3>Weeks 5–6 · Neural Networks &amp; Backpropagation</h3><p>6 exercises with step-by-step hints</p></a></div>
+<div class="ctl" style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0"><span class="note" style="width:100%">Jump straight to one chapter's or section's questions:</span><a class="chip" href="quiz-trace-mcq.html#C1">Ch 1: Computer system overview <small style="opacity:.7">&nbsp;48</small></a><a class="chip" href="quiz-trace-mcq.html#C2">Ch 2: OS overview <small style="opacity:.7">&nbsp;41</small></a><a class="chip" href="quiz-trace-mcq.html#C3">Ch 3: Processes <small style="opacity:.7">&nbsp;60</small></a><a class="chip" href="quiz-trace-mcq.html#C4">Ch 4: Threads <small style="opacity:.7">&nbsp;59</small></a><a class="chip" href="quiz-trace-mcq.html#S3">Sec 3: fork() <small style="opacity:.7">&nbsp;35</small></a><a class="chip" href="quiz-trace-mcq.html#S4">Sec 4: exec() <small style="opacity:.7">&nbsp;27</small></a><a class="chip" href="quiz-trace-mcq.html#S5">Sec 5: pipe() <small style="opacity:.7">&nbsp;24</small></a></div>
+<h2>Practice by chapter and lab section</h2><div class="grid"><a class="card" href="os-ch1-computer-system.html"><span class="n">Practice part 1 · OS Chapter 1</span><h3>Ch 1 · Computer System Overview</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="os-ch2-os-overview.html"><span class="n">Practice part 2 · OS Chapter 2</span><h3>Ch 2 · Operating System Overview</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="os-ch3-processes.html"><span class="n">Practice part 3 · OS Chapter 3</span><h3>Ch 3 · Process Description and Control</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="os-ch4-threads.html"><span class="n">Practice part 4 · OS Chapter 4</span><h3>Ch 4 · Threads</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="os-sec3-fork.html"><span class="n">Practice part 5 · OS Lab Section 3</span><h3>Lab Section 3 · fork()</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="os-sec4-exec.html"><span class="n">Practice part 6 · OS Lab Section 4</span><h3>Lab Section 4 · exec()</h3><p>6 exercises with step-by-step hints</p></a><a class="card" href="os-sec5-pipe.html"><span class="n">Practice part 7 · OS Lab Section 5</span><h3>Lab Section 5 · pipe()</h3><p>6 exercises with step-by-step hints</p></a></div>
 <footer>Keep all these files in the same folder so the links between pages work.</footer></main>
 <script>
-const KW=new Set("def return if elif else for while in not and or break continue import from as None True False del pass is lambda with".split(" "));
-const FN=new Set("print len range type int float str list dict set tuple input open enumerate zip sorted bool repr min max sum".split(" "));
+const KW=new Set("def return if elif else for while in not and or break continue import from as None True False del pass is lambda with int char void const unsigned long short struct sizeof NULL pid_t ssize_t size_t switch case default do".split(" "));
+const FN=new Set("print len range type int float str list dict set tuple input open enumerate zip sorted bool repr min max sum printf perror fork getpid getppid wait waitpid exit execl execv execlp execvp pipe read write close sleep strlen atoi memset main".split(" "));
 function escH(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function highlight(src){
-  const re=/(#[^\n]*)|("{3}[\s\S]*?"{3}|'{3}[\s\S]*?'{3}|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^>>>|^\.\.\.)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b/gm;
+  const re=/(#(?!include)[^\n]*|\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("{3}[\s\S]*?"{3}|'{3}[\s\S]*?'{3}|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^>>>|^\.\.\.)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b/gm;
   let out="",last=0,m;
   while((m=re.exec(src))){
     out+=escH(src.slice(last,m.index));last=re.lastIndex;
@@ -191,6 +200,6 @@ function highlight(src){
 document.querySelectorAll("pre.code").forEach(p=>{p.innerHTML=highlight(p.textContent);});
 const store={get(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 
-try{const s=JSON.parse(localStorage.getItem("cc511-quiz-v1")||"{}");const n=Object.keys(s).length;
-if(n)document.getElementById("idx-prog").textContent="You have answered "+n+" of 199 questions so far.";}catch(e){}
+try{const s=JSON.parse(localStorage.getItem("os8e-quiz-v1")||"{}");const n=Object.keys(s).length;
+if(n)document.getElementById("idx-prog").textContent="You have answered "+n+" of 294 questions so far.";}catch(e){}
 </script></body></html>

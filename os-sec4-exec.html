@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Part 1 · Week 1 · AI &amp; Intelligent Agents · CC511 AI practice</title><style>
+<title>Part 6 · Lab Section 4 · exec() · OS practice</title><style>
 :root{
   --bg:#f5f6fa; --card:#ffffff; --ink:#1b1f2e; --muted:#5d6478; --line:#e3e6ef;
   --accent:#27378f; --accent-soft:#e9ecfa; --accent-ink:#ffffff;
@@ -158,73 +158,125 @@ table.board{border-collapse:collapse;font-variant-numeric:tabular-nums}
 table.board caption{font-size:13px;color:var(--muted);padding-bottom:4px;font-weight:600}
 table.board td{width:40px;height:40px;text-align:center;border:2px solid var(--accent);font-weight:700;font-size:18px;background:var(--card)}
 table.board td:empty{background:var(--accent-soft)}
+
+.fig .st{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8}
+.fig .st.hi{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.4}
+.fig .ar{stroke:var(--ink);stroke-width:1.6;fill:none}
+.fig .ar.dash{stroke-dasharray:6 5}
+.fig .al{fill:var(--accent);font-size:12px;font-weight:600;paint-order:stroke;stroke:var(--card);stroke-width:4px}
+.fig .sn{font-size:13px;font-weight:700}
+.fig #ah path{fill:var(--ink)}
+.trace td,.trace th{padding:2px 6px;font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
 .board.ttt td{width:34px;height:34px;font-size:18px}
 </style></head>
-<body data-part="1"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">CC511 <span>AI</span> · Practice</a><div class="chips"><a class="chip on" href="cc511-w1-agents.html" title="Part 1: Week 1 · AI &amp; Intelligent Agents">1</a><a class="chip" href="cc511-w2-uninformed.html" title="Part 2: Week 2 · Uninformed Search">2</a><a class="chip" href="cc511-w3-informed.html" title="Part 3: Week 3 · Informed (Heuristic) Search">3</a><a class="chip" href="cc511-w4-games.html" title="Part 4: Week 4 · Games &amp; Adversarial Search">4</a><a class="chip" href="cc511-w5-6-neural-networks.html" title="Part 5: Weeks 5–6 · Neural Networks &amp; Backpropagation">5</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">Part 1 of 5 · CC511 Week 1</p>
-<h1>Week 1 · AI &amp; Intelligent Agents</h1>
-<p class="lead">Try each exercise yourself first. If you get stuck, open the hints one at a time, and only then look at the solution.</p></section><div class="recap"><h2>Quick recap from the lecture</h2><ul><li>AI = reproducing human reasoning and intelligent behaviour by computational methods. Four approaches: <b>think like humans · act like humans · think rationally · act rationally</b>.</li><li>Rational approach: always make the best decision given knowledge, time and resources, i.e. <b>maximize expected utility</b>.</li><li><b>Turing test</b> (1950): an interrogator questions it with no physical interaction; it passes if they can't tell it from a person. CAPTCHA reverses it.</li><li>Agent: <code>f: P* → A</code> (percept histories → actions). <b>Agent = Architecture + Program</b>. Specify tasks with <b>PEAS</b>.</li><li>Environment types: observable, deterministic, episodic, static, discrete, single-agent (and their opposites).</li><li>Agent types (taxi example): simple reflex → keeps track of the world (internal state) → goal-based (search &amp; planning) → utility-based (utility function).</li></ul></div><div class="howto"><span>💡 Hints open one step at a time</span><span>▶ Run code in the editor (needs internet the first time) or in Google Colab</span><span>✔ Tick “Solved” to track progress</span></div><div class="progress"><span id="prog-text"></span><div class="bar"><i id="prog-bar"></i></div></div><article class="ex" id="p1e1"><header><span class="num">1.1</span><span class="badge think">Think & answer</span><h3>Fill the 2×2 grid</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Draw the 2×2 grid of AI definitions. Then place: (a) Haugeland's “machines with minds”, (b) Rich &amp; Knight's “things at which people are better”, (c) the Turing test, (d) an agent maximizing expected utility.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Rows: think / act. Columns: like humans / rationally.</li><li><b>Step 2.</b> Haugeland is about <em>thinking</em>; Rich &amp; Knight and the Turing test are about <em>behaviour</em>.</li><li><b>Step 3.</b> Maximizing utility is the definition of the rational agent.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><table class="t"><tr><th></th><th>Like humans</th><th>Rationally</th></tr>
-          <tr><th>Think</th><td>(a) Haugeland 1985</td><td>logic, “laws of thought”</td></tr>
-          <tr><th>Act</th><td>(b) Rich &amp; Knight 1991, (c) Turing test</td><td>(d) rational agent</td></tr></table></div></details></article><article class="ex" id="p1e2"><header><span class="num">1.2</span><span class="badge think">Think & answer</span><h3>PEAS for an automated taxi</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write a PEAS description for an automated taxi driver.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> P: how do we judge a good trip? Think safety, speed, legality, comfort, profit.</li><li><b>Step 2.</b> E: what is around the taxi? A: what can it move or control? S: what does it read from the world?</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><ul><li><b>Performance</b>: safe, fast, legal, comfortable trip; maximize profit</li>
-          <li><b>Environment</b>: roads, other traffic, pedestrians, customers, weather</li>
-          <li><b>Actuators</b>: steering, accelerator, brake, signal, horn, display</li>
-          <li><b>Sensors</b>: cameras, sonar/radar, speedometer, GPS, odometer, engine sensors, keyboard/mic</li></ul></div></details></article><article class="ex" id="p1e3"><header><span class="num">1.3</span><span class="badge think">Think & answer</span><h3>Classify three environments</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">For each, decide observable/partially, deterministic/not, episodic/sequential, static/dynamic, discrete/continuous, single/multi-agent: (a) crossword puzzle, (b) taxi driving, (c) classifying X-ray images one at a time.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Crossword: you can see the whole grid and nothing changes on its own.</li><li><b>Step 2.</b> Taxi: lots of things you can't see, other agents, continuous speeds.</li><li><b>Step 3.</b> X-ray: each image is judged on its own (does one image affect the next?).</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><table class="t"><tr><th></th><th>Crossword</th><th>Taxi</th><th>X-ray</th></tr>
-          <tr><td>Observable</td><td>Fully</td><td>Partially</td><td>Fully</td></tr>
-          <tr><td>Deterministic</td><td>Yes</td><td>No</td><td>Yes</td></tr>
-          <tr><td>Episodic</td><td>Sequential</td><td>Sequential</td><td><b>Episodic</b></td></tr>
-          <tr><td>Static</td><td>Static</td><td>Dynamic</td><td>Static</td></tr>
-          <tr><td>Discrete</td><td>Discrete</td><td>Continuous</td><td>Continuous</td></tr>
-          <tr><td>Agents</td><td>Single</td><td>Multi</td><td>Single</td></tr></table></div></details></article><article class="ex" id="p1e4"><header><span class="num">1.4</span><span class="badge think">Think & answer</span><h3>Name the agent type</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Name the agent type for each taxi rule: (a) brake if the car in front brakes; (b) brake if the car in front brakes <em>and</em> we're on the freeway; (c) change lane and plan, because we must reach the hospital; (d) choose the route that gets passengers to the hospital alive and happy.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> (a) needs only the current percept.</li><li><b>Step 2.</b> (b) must remember something it can't currently see.</li><li><b>Step 3.</b> (c) has a goal; (d) measures <em>how good</em> a state is.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer">(a) Simple reflex · (b) agent that keeps track of the world (internal state) · (c) goal-based (search &amp; planning) · (d) utility-based (utility function).</div></details></article><article class="ex" id="p1e5"><header><span class="num">1.5</span><span class="badge write">Write code</span><h3>A simple reflex vacuum agent</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write <code>reflex_vacuum(location, status)</code> for the two-square world: Suck if the square is Dirty, else move Right from A and Left from B. Test it on the four possible percepts.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> The percept is a pair like <code>("A", "Dirty")</code>.</li><li><b>Step 2.</b> Check the status first: <code>if status == "Dirty": return "Suck"</code>.</li><li><b>Step 3.</b> Then <code>elif location == "A": return "Right"</code>, <code>else: return "Left"</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">def reflex_vacuum(location, status):
-    if status == &quot;Dirty&quot;:
-        return &quot;Suck&quot;
-    elif location == &quot;A&quot;:
-        return &quot;Right&quot;
-    else:
-        return &quot;Left&quot;
+<body data-part="6"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">Operating <span>Systems</span> · Practice</a><div class="chips"><a class="chip" href="os-ch1-computer-system.html" title="Part 1: Ch 1 · Computer System Overview">1</a><a class="chip" href="os-ch2-os-overview.html" title="Part 2: Ch 2 · Operating System Overview">2</a><a class="chip" href="os-ch3-processes.html" title="Part 3: Ch 3 · Process Description and Control">3</a><a class="chip" href="os-ch4-threads.html" title="Part 4: Ch 4 · Threads">4</a><a class="chip" href="os-sec3-fork.html" title="Part 5: Lab Section 3 · fork()">5</a><a class="chip on" href="os-sec4-exec.html" title="Part 6: Lab Section 4 · exec()">6</a><a class="chip" href="os-sec5-pipe.html" title="Part 7: Lab Section 5 · pipe()">7</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">Part 6 of 7 · OS Lab Section 4</p>
+<h1>Lab Section 4 · exec()</h1>
+<p class="lead">Try each exercise yourself first. If you get stuck, open the hints one at a time, and only then look at the solution.</p></section><div class="recap"><h2>Quick recap from the lecture</h2><ul><li>The <b>exec</b> family replaces the program inside the current process with a new program; same process, <b>same PID</b>. It can run binaries or shell scripts (unistd.h).</li><li><b>l</b> = arguments as a NULL-terminated <b>list</b>: <code>execl("/bin/echo","echo","Hi","Hi",NULL)</code>. <b>v</b> = arguments in an <b>array</b>: <code>execv("/bin/echo", argv)</code>.</li><li><b>p</b> = search the <b>PATH</b>: <code>execlp("echo",…)</code>, <code>execvp("echo", argv)</code>. Without p you need a path to the file.</li><li>The first argument after the path becomes <code>argv[0]</code>. Code after a successful exec never runs; it only runs if exec fails (returns −1).</li><li>Typical pattern: <b>fork</b>, the child calls <b>exec</b> (then <code>exit</code> in case exec fails), and the parent <b>waits</b>. To spawn exactly n children in a loop, each child must exit.</li><li>Compile and run in a Linux terminal: <code>gcc file.c -o prog</code> then <code>./prog</code>. These are C programs, so there is no in-browser editor; the outputs shown come from real runs.</li></ul></div><div class="howto"><span>💡 Hints open one step at a time</span><span>▶ Run code in the editor (needs internet the first time) or in Google Colab</span><span>✔ Tick “Solved” to track progress</span></div><div class="progress"><span id="prog-text"></span><div class="bar"><i id="prog-bar"></i></div></div><article class="ex" id="p6e1"><header><span class="num">6.1</span><span class="badge think">Think & answer</span><h3>l, v, p: write all four calls</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write the four calls (execl, execv, execlp, execvp) that run <code>ls -l</code>. Assume ls is at /bin/ls.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> l: list the arguments one by one, ending with NULL.</li><li><b>Step 2.</b> v: put them in <code>char *args[] = {"ls", "-l", NULL};</code></li><li><b>Step 3.</b> p versions take just "ls"; the others need "/bin/ls".</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><pre class="code">char *args[] = {"ls", "-l", NULL};
+execl ("/bin/ls", "ls", "-l", NULL);
+execv ("/bin/ls", args);
+execlp("ls", "ls", "-l", NULL);
+execvp("ls", args);</pre></div></details></article><article class="ex" id="p6e2"><header><span class="num">6.2</span><span class="badge predict">Predict the output</span><h3>What does b receive?</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">a.c runs <code>b</code> (b.c is shown in the hint). Predict the output.</div><div class="label">Code</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
 
-for percept in [(&quot;A&quot;, &quot;Dirty&quot;), (&quot;A&quot;, &quot;Clean&quot;), (&quot;B&quot;, &quot;Dirty&quot;), (&quot;B&quot;, &quot;Clean&quot;)]:
-    print(percept, &quot;-&gt;&quot;, reflex_vacuum(*percept))</pre><div class="label">Expected output</div><pre class="out">(&#x27;A&#x27;, &#x27;Dirty&#x27;) -&gt; Suck
-(&#x27;A&#x27;, &#x27;Clean&#x27;) -&gt; Right
-(&#x27;B&#x27;, &#x27;Dirty&#x27;) -&gt; Suck
-(&#x27;B&#x27;, &#x27;Clean&#x27;) -&gt; Left</pre><p class="explain"><code>*percept</code> unpacks the tuple into the two arguments. This agent is a pure condition → action table: a simple reflex agent.</p></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off"># Write your code here
-</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p1e6"><header><span class="num">1.6</span><span class="badge predict">Predict the output</span><h3>Run the vacuum world</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Both squares start Dirty and the agent starts in A. Trace 4 steps. What is printed?</div><div class="label">Code</div><pre class="code">world = {&quot;A&quot;: &quot;Dirty&quot;, &quot;B&quot;: &quot;Dirty&quot;}
-loc = &quot;A&quot;
-for step in range(4):
-    status = world[loc]
-    if status == &quot;Dirty&quot;:
-        action = &quot;Suck&quot;
-        world[loc] = &quot;Clean&quot;
-    elif loc == &quot;A&quot;:
-        action = &quot;Right&quot;
-        loc = &quot;B&quot;
-    else:
-        action = &quot;Left&quot;
-        loc = &quot;A&quot;
-    print(step, action, world)</pre><div class="guess" data-expected="0 Suck {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Dirty&#x27;}
-1 Right {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Dirty&#x27;}
-2 Suck {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Clean&#x27;}
-3 Left {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Clean&#x27;}"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Step 0: A is Dirty → Suck → A becomes Clean.</li><li><b>Step 2.</b> Step 1: A is Clean → Right → now in B.</li><li><b>Step 3.</b> Step 2: B is Dirty → Suck. Step 3: B is Clean → Left.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">0 Suck {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Dirty&#x27;}
-1 Right {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Dirty&#x27;}
-2 Suck {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Clean&#x27;}
-3 Left {&#x27;A&#x27;: &#x27;Clean&#x27;, &#x27;B&#x27;: &#x27;Clean&#x27;}</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off">world = {&quot;A&quot;: &quot;Dirty&quot;, &quot;B&quot;: &quot;Dirty&quot;}
-loc = &quot;A&quot;
-for step in range(4):
-    status = world[loc]
-    if status == &quot;Dirty&quot;:
-        action = &quot;Suck&quot;
-        world[loc] = &quot;Clean&quot;
-    elif loc == &quot;A&quot;:
-        action = &quot;Right&quot;
-        loc = &quot;B&quot;
-    else:
-        action = &quot;Left&quot;
-        loc = &quot;A&quot;
-    print(step, action, world)</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><div class="pager"><a href="index.html"><small>← Back</small>All parts</a><a class="next" href="cc511-w2-uninformed.html"><small>Next →</small>Part 2: Week 2 · Uninformed Search</a></div><footer>Based on CC511 Artificial Intelligence, Weeks 1–6 (Dr. Karma Fathalla).</footer></main>
+int main(){
+    printf(&quot;in a\n&quot;);
+    execl(&quot;b&quot;, &quot;first&quot;, &quot;second&quot;, NULL);
+    printf(&quot;bye from a\n&quot;);
+    return 0;
+}</pre><div class="guess" data-expected="in a
+in b: argc = 2
+argv[0] = first
+argv[1] = second"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> b.c prints argc, then every argv[i]: <code>for(i = 0; i &lt; argc; i++) printf("argv[%d] = %s\n", i, argv[i]);</code></li><li><b>Step 2.</b> "b" is the path; "first" becomes argv[0].</li><li><b>Step 3.</b> “bye from a” is after a successful exec.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">in a
+in b: argc = 2
+argv[0] = first
+argv[1] = second</pre></details></article><article class="ex" id="p6e3"><header><span class="num">6.3</span><span class="badge write">Write code</span><h3>fork + exec + wait</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write a program whose child runs <code>echo Hello from echo</code> using execlp, while the parent waits and then prints “child finished”. Add a safety exit after exec.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Child: <code>execlp("echo", "echo", "Hello", "from", "echo", NULL);</code></li><li><b>Step 2.</b> After it: <code>perror(...)</code> and <code>exit(1)</code>: only reached if exec failed.</li><li><b>Step 3.</b> Parent: <code>wait(NULL);</code> then printf.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(){
+    pid_t pid = fork();
+    if(pid == 0){
+        execlp(&quot;echo&quot;, &quot;echo&quot;, &quot;Hello&quot;, &quot;from&quot;, &quot;echo&quot;, NULL);
+        perror(&quot;exec failed&quot;);     // only reached if exec fails
+        exit(1);
+    }
+    wait(NULL);
+    printf(&quot;child finished\n&quot;);
+    return 0;
+}</pre><div class="label">Expected output</div><pre class="out">Hello from echo
+child finished</pre></details></article><article class="ex" id="p6e4"><header><span class="num">6.4</span><span class="badge fix">Fix the bug</span><h3>Exactly three children</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">This program should create exactly 3 children (one line each) but prints 7 lines. Fix it.</div><div class="label">Buggy code</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(){
+    for(int i = 0; i &lt; 3; i++){
+        pid_t pid = fork();
+        if(pid == 0){
+            printf(&quot;child %d\n&quot;, i);
+        }
+        else{
+            wait(NULL);
+        }
+    }
+    return 0;
+}</pre><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> After printing, each child keeps running the loop and forks children of its own.</li><li><b>Step 2.</b> The Multiple Forks slide: exit from each child after finishing its work.</li><li><b>Step 3.</b> Add <code>exit(0);</code> after the child's printf.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(){
+    for(int i = 0; i &lt; 3; i++){
+        pid_t pid = fork();
+        if(pid == 0){
+            printf(&quot;child %d\n&quot;, i);
+            exit(0);          // stop this child from looping and forking
+        }
+        else{
+            wait(NULL);
+        }
+    }
+    return 0;
+}</pre><div class="label">Expected output</div><pre class="out">child 0
+child 1
+child 2</pre></details></article><article class="ex" id="p6e5"><header><span class="num">6.5</span><span class="badge predict">Predict the output</span><h3>When exec fails</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Predict the output.</div><div class="label">Code</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(){
+    printf(&quot;trying...\n&quot;);
+    int r = execl(&quot;/bin/does_not_exist&quot;, &quot;does_not_exist&quot;, NULL);
+    printf(&quot;exec returned %d\n&quot;, r);
+    return 0;
+}</pre><div class="guess" data-expected="trying...
+exec returned -1"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> The file doesn't exist, so exec fails.</li><li><b>Step 2.</b> A failed exec returns −1 and the program continues.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">trying...
+exec returned -1</pre></details></article><article class="ex" id="p6e6"><header><span class="num">6.6</span><span class="badge write">Write code</span><h3>execv with an argument array</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Build an argument array and use execv to run /bin/echo so that it prints <code>OS lab section 4</code>.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> args[0] should be the program name "echo".</li><li><b>Step 2.</b> Then one string per word, then NULL.</li><li><b>Step 3.</b> <code>execv("/bin/echo", args);</code></li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main(){
+    char *args[] = {&quot;echo&quot;, &quot;OS&quot;, &quot;lab&quot;, &quot;section&quot;, &quot;4&quot;, NULL};
+    execv(&quot;/bin/echo&quot;, args);
+    perror(&quot;execv failed&quot;);
+    return 1;
+}</pre><div class="label">Expected output</div><pre class="out">OS lab section 4</pre></details></article><div class="pager"><a href="os-sec3-fork.html"><small>← Previous</small>Part 5: Lab Section 3 · fork()</a><a class="next" href="os-sec5-pipe.html"><small>Next →</small>Part 7: Lab Section 5 · pipe()</a></div><footer>Based on Stallings, Operating Systems: Internals and Design Principles (8th ed.), Chapters 1–4, plus lab sections 3–5 (fork, exec, pipe).</footer></main>
 <script>
-const KW=new Set("def return if elif else for while in not and or break continue import from as None True False del pass is lambda with".split(" "));
-const FN=new Set("print len range type int float str list dict set tuple input open enumerate zip sorted bool repr min max sum".split(" "));
+const KW=new Set("def return if elif else for while in not and or break continue import from as None True False del pass is lambda with int char void const unsigned long short struct sizeof NULL pid_t ssize_t size_t switch case default do".split(" "));
+const FN=new Set("print len range type int float str list dict set tuple input open enumerate zip sorted bool repr min max sum printf perror fork getpid getppid wait waitpid exit execl execv execlp execvp pipe read write close sleep strlen atoi memset main".split(" "));
 function escH(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function highlight(src){
-  const re=/(#[^\n]*)|("{3}[\s\S]*?"{3}|'{3}[\s\S]*?'{3}|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^>>>|^\.\.\.)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b/gm;
+  const re=/(#(?!include)[^\n]*|\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("{3}[\s\S]*?"{3}|'{3}[\s\S]*?'{3}|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^>>>|^\.\.\.)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b/gm;
   let out="",last=0,m;
   while((m=re.exec(src))){
     out+=escH(src.slice(last,m.index));last=re.lastIndex;
@@ -253,7 +305,7 @@ document.querySelectorAll(".hintbox").forEach(box=>{
   btn.addEventListener("click",()=>{if(shown<items.length){items[shown].classList.add("show");shown++;label();}});
 });
 // ---- solved checkboxes
-const PKEY="cc511-solved-"+document.body.dataset.part;
+const PKEY="os8e-solved-"+document.body.dataset.part;
 const solved=new Set(store.get(PKEY)||[]);
 const cards=[...document.querySelectorAll(".ex")];
 function refresh(){

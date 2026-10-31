@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Part 5 · Weeks 5–6 · Neural Networks &amp; Backpropagation · CC511 AI practice</title><style>
+<title>Part 5 · Lab Section 3 · fork() · OS practice</title><style>
 :root{
   --bg:#f5f6fa; --card:#ffffff; --ink:#1b1f2e; --muted:#5d6478; --line:#e3e6ef;
   --accent:#27378f; --accent-soft:#e9ecfa; --accent-ink:#ffffff;
@@ -158,97 +158,152 @@ table.board{border-collapse:collapse;font-variant-numeric:tabular-nums}
 table.board caption{font-size:13px;color:var(--muted);padding-bottom:4px;font-weight:600}
 table.board td{width:40px;height:40px;text-align:center;border:2px solid var(--accent);font-weight:700;font-size:18px;background:var(--card)}
 table.board td:empty{background:var(--accent-soft)}
+
+.fig .st{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8}
+.fig .st.hi{fill:var(--ok-soft);stroke:var(--ok);stroke-width:2.4}
+.fig .ar{stroke:var(--ink);stroke-width:1.6;fill:none}
+.fig .ar.dash{stroke-dasharray:6 5}
+.fig .al{fill:var(--accent);font-size:12px;font-weight:600;paint-order:stroke;stroke:var(--card);stroke-width:4px}
+.fig .sn{font-size:13px;font-weight:700}
+.fig #ah path{fill:var(--ink)}
+.trace td,.trace th{padding:2px 6px;font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
 .board.ttt td{width:34px;height:34px;font-size:18px}
 </style></head>
-<body data-part="5"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">CC511 <span>AI</span> · Practice</a><div class="chips"><a class="chip" href="cc511-w1-agents.html" title="Part 1: Week 1 · AI &amp; Intelligent Agents">1</a><a class="chip" href="cc511-w2-uninformed.html" title="Part 2: Week 2 · Uninformed Search">2</a><a class="chip" href="cc511-w3-informed.html" title="Part 3: Week 3 · Informed (Heuristic) Search">3</a><a class="chip" href="cc511-w4-games.html" title="Part 4: Week 4 · Games &amp; Adversarial Search">4</a><a class="chip on" href="cc511-w5-6-neural-networks.html" title="Part 5: Weeks 5–6 · Neural Networks &amp; Backpropagation">5</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">Part 5 of 5 · CC511 Weeks 5–6</p>
-<h1>Weeks 5–6 · Neural Networks &amp; Backpropagation</h1>
-<p class="lead">Try each exercise yourself first. If you get stuck, open the hints one at a time, and only then look at the solution.</p></section><div class="recap"><h2>Quick recap from the lecture</h2><ul><li>Neuron mapping: soma → node, dendrites → input, axon → output, synapse → weight. A neuron weights its inputs, sums them and applies a nonlinear function.</li><li><b>Perceptron</b>: f(x) = 1 if w·x + b &gt; 0 else 0. Trained with the delta rule. Learns only linearly separable patterns, so it cannot learn XOR.</li><li><b>Sigmoid</b> 1/(1+e<sup>−x</sup>), range [0,1], derivative f(1−f). tanh range [−1,1]. MLPs are feed-forward and fully connected.</li><li><b>Backprop</b>: I<sub>j</sub> = Σw<sub>ij</sub>O<sub>i</sub> + θ<sub>j</sub>; O<sub>j</sub> = sigmoid(I<sub>j</sub>); output Err = O(1−O)(T−O); hidden Err = O(1−O)ΣErr<sub>k</sub>w<sub>jk</sub>; Δw = l·Err<sub>j</sub>·O<sub>i</sub>; Δθ = l·Err<sub>j</sub>.</li><li>Watch for overfitting (have 5–10× more samples than weights; use early stopping), vanishing gradients, and explainability (sensitivity analysis).</li></ul></div><div class="howto"><span>💡 Hints open one step at a time</span><span>▶ Run code in the editor (needs internet the first time) or in Google Colab</span><span>✔ Tick “Solved” to track progress</span></div><div class="progress"><span id="prog-text"></span><div class="bar"><i id="prog-bar"></i></div></div><article class="ex" id="p5e1"><header><span class="num">5.1</span><span class="badge write">Write code</span><h3>A perceptron truth table</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write <code>perceptron(w, b, x)</code> and print the outputs of AND (w = (1, 1), b = −1.5) and OR (w = (1, 1), b = −0.5) for all four inputs.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Net = <code>w[0]*x[0] + w[1]*x[1] + b</code>.</li><li><b>Step 2.</b> Return 1 if net &gt; 0, else 0.</li><li><b>Step 3.</b> Loop over <code>[(0, 0), (0, 1), (1, 0), (1, 1)]</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">def perceptron(w, b, x):
-    net = w[0] * x[0] + w[1] * x[1] + b
-    return 1 if net &gt; 0 else 0
+<body data-part="5"><nav class="topbar"><div class="wrap"><a class="brand" href="index.html">Operating <span>Systems</span> · Practice</a><div class="chips"><a class="chip" href="os-ch1-computer-system.html" title="Part 1: Ch 1 · Computer System Overview">1</a><a class="chip" href="os-ch2-os-overview.html" title="Part 2: Ch 2 · Operating System Overview">2</a><a class="chip" href="os-ch3-processes.html" title="Part 3: Ch 3 · Process Description and Control">3</a><a class="chip" href="os-ch4-threads.html" title="Part 4: Ch 4 · Threads">4</a><a class="chip on" href="os-sec3-fork.html" title="Part 5: Lab Section 3 · fork()">5</a><a class="chip" href="os-sec4-exec.html" title="Part 6: Lab Section 4 · exec()">6</a><a class="chip" href="os-sec5-pipe.html" title="Part 7: Lab Section 5 · pipe()">7</a><a class="chip" href="quiz-trace-mcq.html">Quiz</a></div></div></nav><main class="wrap"><section class="hero"><p class="eyebrow">Part 5 of 7 · OS Lab Section 3</p>
+<h1>Lab Section 3 · fork()</h1>
+<p class="lead">Try each exercise yourself first. If you get stuck, open the hints one at a time, and only then look at the solution.</p></section><div class="recap"><h2>Quick recap from the lecture</h2><ul><li>A <b>system call</b> is how a program asks the OS for a service. <code>fork()</code> creates a duplicate <b>child</b> process that runs concurrently with the <b>parent</b>; the only difference is the PID.</li><li>fork() takes no parameters. It returns <b>&lt; 0</b> on failure, <b>0</b> in the child, and the <b>child's PID</b> in the parent. Both continue from the instruction after fork().</li><li><code>getpid()</code> = my PID, <code>getppid()</code> = my parent's PID; <code>pid_t</code> is the PID type (unistd.h).</li><li><b>Orphan</b>: the parent exits without waiting; init adopts the child. Prevent it with <code>wait(NULL)</code> (any child) or <code>waitpid(pid, &amp;status, 0)</code> (that child, blocking), from sys/wait.h.</li><li>n forks in a row → 2<sup>n</sup> processes. Each process has its own copy of the variables.</li><li>Compile and run in a Linux terminal: <code>gcc file.c -o prog</code> then <code>./prog</code>. These are C programs, so there is no in-browser editor; the outputs shown come from real runs.</li></ul></div><div class="howto"><span>💡 Hints open one step at a time</span><span>▶ Run code in the editor (needs internet the first time) or in Google Colab</span><span>✔ Tick “Solved” to track progress</span></div><div class="progress"><span id="prog-text"></span><div class="bar"><i id="prog-bar"></i></div></div><article class="ex" id="p5e1"><header><span class="num">5.1</span><span class="badge think">Think & answer</span><h3>Who gets which return value?</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Fill in the table for <code>pid_t pid = fork();</code>: for each case, which process sees it and what it means.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> There are three cases: negative, zero, positive.</li><li><b>Step 2.</b> The parent needs to know the child's PID, so which process gets it?</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><table class="t"><tr><th>fork() returns</th><th>Seen by</th><th>Meaning</th></tr>
+          <tr><td>&lt; 0</td><td>Parent (no child exists)</td><td>Creating the child failed</td></tr>
+          <tr><td>0</td><td>Child</td><td>“You are the child” (use getpid() to get your PID)</td></tr>
+          <tr><td>&gt; 0</td><td>Parent</td><td>The value is the new child's PID</td></tr></table></div></details></article><article class="ex" id="p5e2"><header><span class="num">5.2</span><span class="badge predict">Predict the output</span><h3>Trace parent and child</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Predict the exact output. (The parent waits for the child.)</div><div class="label">Code</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
 
-for x in [(0, 0), (0, 1), (1, 0), (1, 1)]:
-    print(x, &quot;AND:&quot;, perceptron((1, 1), -1.5, x), &quot;OR:&quot;, perceptron((1, 1), -0.5, x))</pre><div class="label">Expected output</div><pre class="out">(0, 0) AND: 0 OR: 0
-(0, 1) AND: 0 OR: 1
-(1, 0) AND: 0 OR: 1
-(1, 1) AND: 1 OR: 1</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off"># Write your code here
-</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p5e2"><header><span class="num">5.2</span><span class="badge think">Think & answer</span><h3>Why no perceptron can do XOR</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Show that no single straight line separates XOR's outputs. Then describe how a hidden layer fixes this.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Plot (0,0) → 0, (1,1) → 0, (0,1) → 1, (1,0) → 1.</li><li><b>Step 2.</b> The 1s are on one diagonal and the 0s on the other.</li><li><b>Step 3.</b> Hidden units: h1 = OR, h2 = AND; output = h1 AND NOT h2.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><p>The 1s sit at opposite corners (0,1) and (1,0), and the 0s at (0,0) and (1,1). Any line that puts both 1s on one side also puts at least one 0 there, so XOR is not linearly separable.</p>
-          <p>With a hidden layer: h1 = OR(x1, x2), h2 = AND(x1, x2), and Y = h1 AND NOT h2, which is exactly XOR.</p></div></details></article><article class="ex" id="p5e3"><header><span class="num">5.3</span><span class="badge write">Write code</span><h3>The processing-element example</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Compute the weighted sum and the sigmoid output for X = (3, 1, 2) and W = (0.2, 0.4, 0.1). Print both with 2 decimals.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> <code>import math</code> to get <code>math.exp</code>.</li><li><b>Step 2.</b> Y = sum of x × w (use <code>zip</code>).</li><li><b>Step 3.</b> YT = <code>1 / (1 + math.exp(-Y))</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">import math
-X = (3, 1, 2)
-W = (0.2, 0.4, 0.1)
-Y = 0
-for x, w in zip(X, W):
-    Y += x * w
-YT = 1 / (1 + math.exp(-Y))
-print(&quot;Y  = %.2f&quot; % Y)
-print(&quot;YT = %.2f&quot; % YT)</pre><div class="label">Expected output</div><pre class="out">Y  = 1.20
-YT = 0.77</pre></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off"># Write your code here
-</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p5e4"><header><span class="num">5.4</span><span class="badge think">Think & answer</span><h3>Backprop example by hand</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Using the network below with x = (1, 0, 1), T = 1 and l = 0.9, compute I and O for units 4, 5, 6, then Err6, Err5, Err4, and the new w46 and θ6.<div class="figwrap" style="max-width:520px"><svg class="fig" viewBox="0 0 500 280" role="img" aria-label="neural network with 3 inputs, 2 hidden units and 1 output"><line class="e" x1="78" y1="50" x2="232" y2="90"/><line class="e" x1="78" y1="50" x2="232" y2="200"/><line class="e" x1="78" y1="140" x2="232" y2="90"/><line class="e" x1="78" y1="140" x2="232" y2="200"/><line class="e" x1="78" y1="230" x2="232" y2="90"/><line class="e" x1="78" y1="230" x2="232" y2="200"/><line class="e" x1="268" y1="90" x2="412" y2="145"/><line class="e" x1="268" y1="200" x2="412" y2="145"/><circle class="nmax" cx="60" cy="50" r="18"/><text x="60" y="50" style="font-weight:700">1</text><text class="sm" x="20" y="50">x1=1</text><circle class="nmax" cx="60" cy="140" r="18"/><text x="60" y="140" style="font-weight:700">2</text><text class="sm" x="20" y="140">x2=0</text><circle class="nmax" cx="60" cy="230" r="18"/><text x="60" y="230" style="font-weight:700">3</text><text class="sm" x="20" y="230">x3=1</text><circle class="nmin" cx="250" cy="90" r="18"/><text x="250" y="90" style="font-weight:700">4</text><text class="hv" x="250" y="122">θ4=-0.4</text><circle class="nmin" cx="250" cy="200" r="18"/><text x="250" y="200" style="font-weight:700">5</text><text class="hv" x="250" y="232">θ5=0.2</text><circle class="hl" cx="430" cy="145" r="18"/><text x="430" y="145" style="font-weight:700">6</text><text class="hv" x="430" y="177">θ6=0.1</text><text class="lv" x="34" y="268">input</text><text class="lv" x="222" y="268">hidden</text><text class="lv" x="404" y="268">output</text></svg><table class="t wt"><tr><th>w14</th><th>w15</th><th>w24</th><th>w25</th><th>w34</th><th>w35</th><th>w46</th><th>w56</th></tr><tr><td>0.2</td><td>-0.3</td><td>0.4</td><td>0.1</td><td>-0.5</td><td>0.2</td><td>-0.3</td><td>-0.2</td></tr></table></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> I4 = 0.2 + 0 − 0.5 − 0.4. I5 = −0.3 + 0 + 0.2 + 0.2.</li><li><b>Step 2.</b> I6 = −0.3·O4 − 0.2·O5 + 0.1. Err6 = O6(1−O6)(1−O6).</li><li><b>Step 3.</b> Err4 = O4(1−O4)·Err6·w46. New w46 = −0.3 + 0.9·Err6·O4.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Answer</div><div class="answer"><table class="t"><tr><th>Unit</th><th>I</th><th>O</th><th>Err</th></tr>
-          <tr><td>4</td><td>−0.7</td><td>0.332</td><td>−0.0087</td></tr><tr><td>5</td><td>0.1</td><td>0.525</td><td>−0.0065</td></tr>
-          <tr><td>6</td><td>−0.105</td><td>0.474</td><td>0.1311</td></tr></table>
-          <p>w46 = −0.3 + 0.9(0.1311)(0.332) = <b>−0.261</b>; w56 = <b>−0.138</b>; w14 = <b>0.192</b>; w15 = <b>−0.306</b>; θ6 = 0.1 + 0.9(0.1311) = <b>0.218</b>.</p>
-          <p class="note">The slide shows Err5 as 0.0065, but it is −0.0065 (w56 is negative), and the slide's own w15 update uses the negative value.</p></div></details></article><article class="ex" id="p5e5"><header><span class="num">5.5</span><span class="badge write">Write code</span><h3>Code one full backprop step</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write the forward pass, the errors and the weight/bias updates for the worked example. Print O4, O5, O6, the three errors, and the new w46, w56, w14 and θ6 to 4 decimals.</div><div class="label">Starter code</div><pre class="code">import math
-x = {1: 1, 2: 0, 3: 1}
-w = {(1, 4): 0.2, (1, 5): -0.3, (2, 4): 0.4, (2, 5): 0.1,
-     (3, 4): -0.5, (3, 5): 0.2, (4, 6): -0.3, (5, 6): -0.2}
-theta = {4: -0.4, 5: 0.2, 6: 0.1}
-T, l = 1, 0.9
-sig = lambda v: 1 / (1 + math.exp(-v))</pre><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Forward: <code>O = dict(x)</code>; for j in (4, 5): <code>I = sum(w[(i, j)] * O[i] for i in (1, 2, 3)) + theta[j]</code>; <code>O[j] = sig(I)</code>. Then unit 6 from 4 and 5.</li><li><b>Step 2.</b> Errors: <code>err = {6: O[6] * (1 - O[6]) * (T - O[6])}</code>; for j in (4, 5): <code>err[j] = O[j] * (1 - O[j]) * err[6] * w[(j, 6)]</code>.</li><li><b>Step 3.</b> Updates: <code>new_w[(i, j)] = w[(i, j)] + l * err[j] * O[i]</code>; <code>theta[j] + l * err[j]</code>.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">import math
-x = {1: 1, 2: 0, 3: 1}
-w = {(1, 4): 0.2, (1, 5): -0.3, (2, 4): 0.4, (2, 5): 0.1,
-     (3, 4): -0.5, (3, 5): 0.2, (4, 6): -0.3, (5, 6): -0.2}
-theta = {4: -0.4, 5: 0.2, 6: 0.1}
-T, l = 1, 0.9
-sig = lambda v: 1 / (1 + math.exp(-v))
+int main(){
+    printf(&quot;Start\n&quot;);
+    pid_t pid = fork();
+    if(pid == 0)
+        printf(&quot;I am the child, fork returned %d\n&quot;, pid);
+    else{
+        wait(NULL);
+        printf(&quot;I am the parent\n&quot;);
+    }
+    printf(&quot;End\n&quot;);
+    return 0;
+}</pre><div class="guess" data-expected="Start
+I am the child, fork returned 0
+End
+I am the parent
+End"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> “Start” is before fork, so it is printed once.</li><li><b>Step 2.</b> The child prints its line, then “End”.</li><li><b>Step 3.</b> The parent waits, then prints its line and its own “End”.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">Start
+I am the child, fork returned 0
+End
+I am the parent
+End</pre></details></article><article class="ex" id="p5e3"><header><span class="num">5.3</span><span class="badge write">Write code</span><h3>Parent waits for child</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Write a program where the child prints the numbers 1 to 3 and exits, and the parent waits for it and then prints “Child done, parent exiting”.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Start with <code>pid_t pid = fork();</code> and an if / else if / else on pid.</li><li><b>Step 2.</b> In the child branch: a for loop with printf, then <code>exit(0)</code>.</li><li><b>Step 3.</b> In the parent branch: <code>wait(NULL);</code> first, then the printf.</li><li><b>Step 4.</b> Include sys/wait.h for wait().</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
 
-O = dict(x)
-for j in (4, 5):
-    I = sum(w[(i, j)] * O[i] for i in (1, 2, 3)) + theta[j]
-    O[j] = sig(I)
-O[6] = sig(w[(4, 6)] * O[4] + w[(5, 6)] * O[5] + theta[6])
+int main(){
+    pid_t pid = fork();
+    if(pid &lt; 0){
+        perror(&quot;fork failed&quot;);
+        exit(1);
+    }
+    else if(pid == 0){              // child
+        for(int i = 1; i &lt;= 3; i++)
+            printf(&quot;child: %d\n&quot;, i);
+        exit(0);
+    }
+    else{                           // parent
+        wait(NULL);
+        printf(&quot;Child done, parent exiting\n&quot;);
+    }
+    return 0;
+}</pre><div class="label">Expected output</div><pre class="out">child: 1
+child: 2
+child: 3
+Child done, parent exiting</pre></details></article><article class="ex" id="p5e4"><header><span class="num">5.4</span><span class="badge fix">Fix the bug</span><h3>Stop the orphan</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">This program creates an orphan: the parent exits while the child is still sleeping. Fix it so the parent always prints its last line after the child has finished.</div><div class="label">Buggy code</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
 
-err = {6: O[6] * (1 - O[6]) * (T - O[6])}
-for j in (4, 5):
-    err[j] = O[j] * (1 - O[j]) * err[6] * w[(j, 6)]
+int main(){
+    pid_t pid = fork();
+    if(pid == 0){
+        sleep(1);
+        printf(&quot;child: done\n&quot;);
+    }
+    else{
+        printf(&quot;parent: done\n&quot;);
+    }
+    return 0;
+}</pre><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Which function makes a parent wait for its child?</li><li><b>Step 2.</b> Call it in the parent branch before the printf.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
 
-new_w = {k: v + l * err[k[1]] * O[k[0]] for k, v in w.items()}
-new_theta = {j: theta[j] + l * err[j] for j in theta}
+int main(){
+    pid_t pid = fork();
+    if(pid == 0){
+        sleep(1);
+        printf(&quot;child: done\n&quot;);
+    }
+    else{
+        wait(NULL);          // wait for the child first
+        printf(&quot;parent: done\n&quot;);
+    }
+    return 0;
+}</pre><div class="label">Expected output</div><pre class="out">child: done
+parent: done</pre></details></article><article class="ex" id="p5e5"><header><span class="num">5.5</span><span class="badge predict">Predict the output</span><h3>Separate copies of variables</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">Predict the output.</div><div class="label">Code</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
 
-print(&quot;O4 %.4f  O5 %.4f  O6 %.4f&quot; % (O[4], O[5], O[6]))
-print(&quot;Err6 %.4f  Err5 %.4f  Err4 %.4f&quot; % (err[6], err[5], err[4]))
-print(&quot;w46 %.4f  w56 %.4f  w14 %.4f&quot; % (new_w[(4, 6)], new_w[(5, 6)], new_w[(1, 4)]))
-print(&quot;theta6 %.4f&quot; % new_theta[6])</pre><div class="label">Expected output</div><pre class="out">O4 0.3318  O5 0.5250  O6 0.4739
-Err6 0.1312  Err5 -0.0065  Err4 -0.0087
-w46 -0.2608  w56 -0.1380  w14 0.1921
-theta6 0.2181</pre><p class="explain">Your answers will differ from the slide in the 4th decimal, because the slide rounds O6 to 0.475 before continuing.</p></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off">import math
-x = {1: 1, 2: 0, 3: 1}
-w = {(1, 4): 0.2, (1, 5): -0.3, (2, 4): 0.4, (2, 5): 0.1,
-     (3, 4): -0.5, (3, 5): 0.2, (4, 6): -0.3, (5, 6): -0.2}
-theta = {4: -0.4, 5: 0.2, 6: 0.1}
-T, l = 1, 0.9
-sig = lambda v: 1 / (1 + math.exp(-v))
+int main(){
+    int count = 10;
+    pid_t pid = fork();
+    if(pid == 0){
+        count = count * 2;
+        printf(&quot;child count = %d\n&quot;, count);
+        exit(0);
+    }
+    wait(NULL);
+    count = count + 1;
+    printf(&quot;parent count = %d\n&quot;, count);
+    return 0;
+}</pre><div class="guess" data-expected="child count = 20
+parent count = 11"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> After fork, each process has its own count = 10.</li><li><b>Step 2.</b> The child doubles its own copy.</li><li><b>Step 3.</b> The parent adds 1 to its own copy.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">child count = 20
+parent count = 11</pre></details></article><article class="ex" id="p5e6"><header><span class="num">5.6</span><span class="badge write">Write code</span><h3>Read the child&#x27;s exit code</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">The child should exit with code 7. In the parent, use <code>waitpid</code> and print the exit code with the <code>WEXITSTATUS(status)</code> macro.</div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Child: <code>exit(7);</code>.</li><li><b>Step 2.</b> Parent: <code>int status; waitpid(pid, &amp;status, 0);</code></li><li><b>Step 3.</b> The raw status is not 7: it is encoded. <code>WEXITSTATUS(status)</code> extracts the code.</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the full solution</summary><div class="label">Solution</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
 
-# Your code below
-</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><article class="ex" id="p5e6"><header><span class="num">5.6</span><span class="badge predict">Predict the output</span><h3>The vanishing gradient</h3><label class="done"><input type="checkbox"> Solved</label></header><div class="task">The sigmoid derivative is at most 0.25. What does this print?</div><div class="label">Code</div><pre class="code">g = 1.0
-for layer in range(1, 6):
-    g *= 0.25
-    print(layer, g)</pre><div class="guess" data-expected="1 0.25
-2 0.0625
-3 0.015625
-4 0.00390625
-5 0.0009765625"><div class="label">Your prediction</div><textarea spellcheck="false" placeholder="Type exactly what you think will be printed, one line per line. If you think it crashes, write the error name (e.g. TypeError)."></textarea><div class="row"><button class="btn">Check my prediction</button><span class="verdict"></span></div></div><div class="hintbox"><ol class="hints"><li><b>Step 1.</b> Each layer multiplies by 0.25.</li><li><b>Step 2.</b> 0.25, 0.0625, 0.015625, …</li></ol><button class="btn hint-btn"></button></div><details class="solution"><summary>Show the answer</summary><div class="label">Output</div><pre class="out">1 0.25
-2 0.0625
-3 0.015625
-4 0.00390625
-5 0.0009765625</pre><p class="explain">After 5 layers the error signal is about 1000 times smaller. That is why the early layers of deep sigmoid networks learn so slowly.</p></details><details class="tryit"><summary>▶ Try it in the editor</summary><div class="editor" data-files="{}"><textarea spellcheck="false" autocapitalize="off" autocomplete="off">g = 1.0
-for layer in range(1, 6):
-    g *= 0.25
-    print(layer, g)</textarea><div class="row"><button class="btn primary run">Run</button><button class="btn reset">Reset</button><span class="status"></span></div><pre class="out runout"></pre></div></details></article><div class="pager"><a href="cc511-w4-games.html"><small>← Previous</small>Part 4: Week 4 · Games &amp; Adversarial Search</a><a class="next" href="quiz-trace-mcq.html"><small>Next →</small>Trace MCQ quiz</a></div><footer>Based on CC511 Artificial Intelligence, Weeks 1–6 (Dr. Karma Fathalla).</footer></main>
+int main(){
+    pid_t pid = fork();
+    if(pid == 0){
+        printf(&quot;child exiting with 7\n&quot;);
+        exit(7);
+    }
+    int status;
+    waitpid(pid, &amp;status, 0);
+    printf(&quot;raw status = %d\n&quot;, status);
+    printf(&quot;exit code  = %d\n&quot;, WEXITSTATUS(status));
+    return 0;
+}</pre><div class="label">Expected output</div><pre class="out">child exiting with 7
+raw status = 1792
+exit code  = 7</pre><p class="explain">The slides print <code>status</code> directly; that works when the child exits with 0, because the raw value is 0 too. For other codes the raw value is code × 256, so use WEXITSTATUS.</p></details></article><div class="pager"><a href="os-ch4-threads.html"><small>← Previous</small>Part 4: Ch 4 · Threads</a><a class="next" href="os-sec4-exec.html"><small>Next →</small>Part 6: Lab Section 4 · exec()</a></div><footer>Based on Stallings, Operating Systems: Internals and Design Principles (8th ed.), Chapters 1–4, plus lab sections 3–5 (fork, exec, pipe).</footer></main>
 <script>
-const KW=new Set("def return if elif else for while in not and or break continue import from as None True False del pass is lambda with".split(" "));
-const FN=new Set("print len range type int float str list dict set tuple input open enumerate zip sorted bool repr min max sum".split(" "));
+const KW=new Set("def return if elif else for while in not and or break continue import from as None True False del pass is lambda with int char void const unsigned long short struct sizeof NULL pid_t ssize_t size_t switch case default do".split(" "));
+const FN=new Set("print len range type int float str list dict set tuple input open enumerate zip sorted bool repr min max sum printf perror fork getpid getppid wait waitpid exit execl execv execlp execvp pipe read write close sleep strlen atoi memset main".split(" "));
 function escH(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function highlight(src){
-  const re=/(#[^\n]*)|("{3}[\s\S]*?"{3}|'{3}[\s\S]*?'{3}|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^>>>|^\.\.\.)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b/gm;
+  const re=/(#(?!include)[^\n]*|\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("{3}[\s\S]*?"{3}|'{3}[\s\S]*?'{3}|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^>>>|^\.\.\.)|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_]\w*)\b/gm;
   let out="",last=0,m;
   while((m=re.exec(src))){
     out+=escH(src.slice(last,m.index));last=re.lastIndex;
@@ -277,7 +332,7 @@ document.querySelectorAll(".hintbox").forEach(box=>{
   btn.addEventListener("click",()=>{if(shown<items.length){items[shown].classList.add("show");shown++;label();}});
 });
 // ---- solved checkboxes
-const PKEY="cc511-solved-"+document.body.dataset.part;
+const PKEY="os8e-solved-"+document.body.dataset.part;
 const solved=new Set(store.get(PKEY)||[]);
 const cards=[...document.querySelectorAll(".ex")];
 function refresh(){
